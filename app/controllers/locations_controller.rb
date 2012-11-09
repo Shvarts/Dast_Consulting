@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  before_filter :authenticate, :except => [:index, :show]
+  before_filter :authenticate#, :except => [:index, :show]
   respond_to :json, :html
 
   # GET /locations
@@ -88,5 +88,4 @@ class LocationsController < ApplicationController
   def authenticate
     redirect_to("/users/sign_in") unless user_signed_in?
   end
-
 end

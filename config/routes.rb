@@ -1,6 +1,6 @@
 DastConsulting::Application.routes.draw do
   devise_for :users
-
+  root to: 'locations#index'
   resources :locations
 
   # The priority is based upon order of creation:

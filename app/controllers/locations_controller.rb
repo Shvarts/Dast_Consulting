@@ -44,6 +44,7 @@ class LocationsController < ApplicationController
   # POST /locations.json
   def create
     @location = Location.new(params[:location])
+    @location.owner_email = current_user.email
 
     respond_to do |format|
       if @location.save

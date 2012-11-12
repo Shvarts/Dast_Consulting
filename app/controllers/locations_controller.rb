@@ -6,7 +6,7 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-#    @locations = Location.all
+    @locations = Location.all
 #        @search = params[:search]
 #        @locations = []
 #    @locs.each do |l|

@@ -9,6 +9,7 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <%= yield :head %> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -23,7 +24,7 @@
         <a class="brand" href="/locations">Dast consulting</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li><%= link_to "Locations", locations_path %></li>
+            <li><%= link_to "Houses", locations_path %></li>
             <li><%= link_to "Home" %></li>
             <li><%= link_to "Help" %></li>
             <%if current_user%>
@@ -39,11 +40,10 @@
 
 <div class="container">
 	<div class="row">
-		<div class="span9"><%= yield %></div>
+    <div class="span9"><%= yield %></div>
 		<div class="span3"></div>
 	</div>	
 </div>	
-
-
-</body>
+<%= yield :scripts %>
+</body>  
 </html>

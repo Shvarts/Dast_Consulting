@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  before_filter :authenticate#, :except => [:index, :show]
+#  before_filter :authenticate#, :except => [:index, :show]
   respond_to :json, :html
 
   # GET /locations

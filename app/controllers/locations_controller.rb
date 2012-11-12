@@ -5,7 +5,8 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.json
   def index
-    @locations = Location.all
+    puts "____-----------------------------index_____________"
+#    @locations = Location.all
 #        @search = params[:search]
 #        @locations = []
 #    @locs.each do |l|
@@ -16,8 +17,8 @@ class LocationsController < ApplicationController
 #    if @locations.empty?
 #      @locations = Location.all
 #    end
-    @json = @locations.to_gmaps4rails
-    respond_with @json
+#    @json = @locations.to_gmaps4rails
+#    respond_with @json
   end
 
   # GET /locations/1
@@ -181,6 +182,7 @@ class LocationsController < ApplicationController
   end  
 
   def authenticate
+    puts "____-----------------------------authenti_____________----------"
     redirect_to("/users/sign_in") unless user_signed_in?
   end
 end

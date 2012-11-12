@@ -3,28 +3,6 @@
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_location_path,
-            :class => 'btn btn-primary' %>
-
-<%=form_for :dump, :url=>{:controller=>"locations",
-  :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
-  Select an Excel File :
-  <%= f.file_field :excel_file %>
-  <%= submit_tag 'Submit' %>
-<%= bootstrap_progress_bar(33, :color => 'info', :striped => true) %>
-<%end%>
-<%= form_tag("/locations", :method => "get") do %>
-  <%= label_tag(:search, "Search for:") %>
-  <%= text_field_tag(:search) %>
-  <%= submit_tag("Search") %>
-<% end %>
-
-<br />
-<div id="mapCanvas">
-<%= gmaps("map_options" => {"auto_adjust" => "true"}, 
-  "markers" => {"data" => @json, "options" => {"list_container" => "markers_list"} }) %>
-</div>  
 <table class="table table-striped">
   <thead>
     <tr>
@@ -61,4 +39,26 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_location_path,
+            :class => 'btn btn-primary' %>
+
+<%=form_for :dump, :url=>{:controller=>"locations",
+  :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
+  Select an Excel File :
+  <%= f.file_field :excel_file %>
+  <%= submit_tag 'Submit' %>
+<%= bootstrap_progress_bar(33, :color => 'info', :striped => true) %>
+<%end%>
+<%= form_tag("/locations", :method => "get") do %>
+  <%= label_tag(:search, "Search for:") %>
+  <%= text_field_tag(:search) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<br />
+<div id="mapCanvas">
+<%= gmaps("map_options" => {"auto_adjust" => "true"}, 
+  "markers" => {"data" => @json, "options" => {"list_container" => "markers_list"} }) %>
+</div>  
 <ul id="markers_list">  </ul>

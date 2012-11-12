@@ -1,8 +1,8 @@
 DastConsulting::Application.routes.draw do
   devise_for :users
   resources :locations
-  match 'locations/excel' => 'locations#excel'
-  root :to => 'locations#index'
+#  match 'locations/excel' => 'locations#excel'
+#  root :to => 'locations#index'
 #  devise_scope :user do
  #   get "sign_in", :to => "devise/sessions#new"
 #    get "sign_up", :to => "devise/sessions#new"

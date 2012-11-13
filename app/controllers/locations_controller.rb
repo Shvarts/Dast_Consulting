@@ -6,17 +6,17 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-    @locations = Location.all
-#        @search = params[:search]
-#        @locations = []
-#    @locs.each do |l|
-#      if l.address.index(@search.to_s) && @search !="" && @search !=nil
-#        @locations<<l
-#      end
-#    end
-#    if @locations.empty?
-#      @locations = Location.all
-#    end
+    @locs = Location.all
+        @search = params[:search]
+        @locations = []
+    @locs.each do |l|
+      if l.address.index(@search.to_s) && @search !="" && @search !=nil
+        @locations<<l
+      end
+    end
+    if @locations.empty?
+      @locations = Location.all
+    end
     @json = @locations.to_gmaps4rails
     respond_with @json
   end
@@ -140,7 +140,7 @@ class LocationsController < ApplicationController
       oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
       puts "row_size #{row_size}"
-      col_size = oo.first_column.size
+      col_size = oo.last_column.size
       puts "col_size #{col_size}"
       puts "sheet1 #{oo.info}"
       1.upto(col_size) do |i|

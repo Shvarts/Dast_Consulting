@@ -43,6 +43,17 @@
             new_location_path,
             :class => 'btn btn-primary' %>
 
+<%=form_for :dump, :url=>{:controller=>"locations",
+  :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
+  Select an Excel File :
+  <%= f.file_field :excel_file %>
+  <%= submit_tag 'Submit' %>
+<%end%>
+<%= form_tag("/locations", :method => "get") do %>
+  <%= label_tag(:search, "Search for:") %>
+  <%= text_field_tag(:search) %>
+  <%= submit_tag("Search") %>
+<% end %>
 
 <br />
 <div id="mapCanvas">

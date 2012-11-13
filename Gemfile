@@ -9,7 +9,6 @@ gem 'mysql2'
 gem "spreadsheet"
 gem 'devise'
 gem 'roo'
-gem 'css3-progress-bar-rails'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

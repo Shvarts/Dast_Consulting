@@ -48,7 +48,6 @@
   Select an Excel File :
   <%= f.file_field :excel_file %>
   <%= submit_tag 'Submit' %>
-<%= bootstrap_progress_bar(33, :color => 'info', :striped => true) %>
 <%end%>
 <%= form_tag("/locations", :method => "get") do %>
   <%= label_tag(:search, "Search for:") %>

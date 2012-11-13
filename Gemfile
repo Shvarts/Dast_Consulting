@@ -4,16 +4,11 @@ gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-group :development, :test do
-	gem 'capistrano' 
-	gem 'capistrano-ext'
-end
 
 gem 'mysql2'
 gem "spreadsheet"
 gem 'devise'
 gem 'roo'
-gem 'unicorn'
 gem 'css3-progress-bar-rails'
 # Gems used only for assets and not required
 # in production environments by default.

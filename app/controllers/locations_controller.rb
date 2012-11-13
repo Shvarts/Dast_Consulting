@@ -1,24 +1,24 @@
 class LocationsController < ApplicationController
-#  before_filter :authenticate#, :except => [:index, :show]
+  before_filter :authenticate#, :except => [:index, :show]
   respond_to :json, :html
 
   # GET /locations
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-    @locations = Location.all
-#        @search = params[:search]
-#        @locations = []
-#    @locs.each do |l|
-#      if l.address.index(@search.to_s) && @search !="" && @search !=nil
-#        @locations<<l
-#      end
-#    end
-#    if @locations.empty?
-#      @locations = Location.all
-#    end
-#    @json = @locations.to_gmaps4rails
-#    respond_with @json
+    @locs = Location.all
+        @search = params[:search]
+        @locations = []
+    @locs.each do |l|
+      if l.address.index(@search.to_s) && @search !="" && @search !=nil
+        @locations<<l
+      end
+    end
+    if @locations.empty?
+      @locations = Location.all
+    end
+    @json = @locations.to_gmaps4rails
+    respond_with @json
   end
 
   # GET /locations/1

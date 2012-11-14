@@ -56,4 +56,8 @@
 <% end %>
 
 <br />
-<%=gmaps4rails(@json)%>
+<div id="mapCanvas">
+<%= gmaps("map_options" => {"auto_adjust" => "true"}, 
+  "markers" => {"data" => @json, "options" => {"list_container" => "markers_list"} }) %>
+</div>  
+<ul id="markers_list">  </ul>

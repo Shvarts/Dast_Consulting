@@ -13,7 +13,8 @@
   width: 800px;
   height: 400px;
 }
-
+#mapCanvas label { width: auto; display:inline; }
+#mapCanvas img { max-width: none; }
 .bing_map {
    position: absolute;
    top: 20;

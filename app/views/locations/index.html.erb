@@ -1,12 +1,9 @@
 <%- model_class = Location -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
-</div>
 <%=form_for :dump, :url=>{:controller=>"locations",
   :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
   Select an Excel File :
   <%= f.file_field :excel_file %>
-  <%= submit_tag 'Submit' %>
+  <%= submit_tag 'Submit',  html: { class: 'btn btn-success' } %>
 <%end%>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
@@ -15,7 +12,6 @@
 <table class="table1" >
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:address) %></th>
       <th><%= model_class.human_attribute_name(:longitude) %></th>
       <th><%= model_class.human_attribute_name(:latitude) %></th>
@@ -29,14 +25,13 @@
   <tbody>
     <% @locations.each do |location| %>
       <tr>
-        <td><%= link_to location.id, location_path(location) %></td>
         <td><%= link_to location.address, location %></td>
         <td><%= location.longitude %></td>
         <td><%= location.latitude %></td>
         <td><%= location.zip %></td>
         <td><%= location.owner_email %></td>
         <td><%= location.description %></td>
-        <td><%=l location.created_at %></td>
+        <td><%= location.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_location_path(location), :class => 'btn btn-mini' %>

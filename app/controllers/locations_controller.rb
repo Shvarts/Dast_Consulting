@@ -6,18 +6,53 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-    @locs = Location.all
-        @search = params[:search]
-        @locations = []
+    @locals = Location.all
+    @locs = []
+
+    @locals.each do |l| 
+      if l.owner_email.index(current_user.email)
+        @locs << l
+      end
+    end
+    
+    @search = params[:search]
+    @locations = []
     @locs.each do |l|
       if l.address.index(@search.to_s) && @search !="" && @search !=nil
         @locations<<l
       end
     end
     if @locations.empty?
-      @locations = Location.all
+      @locations = @locs
     end
-    @json = @locations.to_gmaps4rails
+  end
+
+  def houses
+    puts "____-----------------------------index_____________"
+    @locals = Location.all
+    @locs = []
+
+    @locals.each do |l| 
+      if l.owner_email.index(current_user.email)
+        @locs << l
+      end
+    end
+    
+    @search = params[:search]
+    @locations = []
+    @locs.each do |l|
+      if l.address.index(@search.to_s) && @search !="" && @search !=nil
+        @locations<<l
+      end
+    end
+    if @locations.empty?
+      @locations = @locs
+    end
+ 
+    @json = @locations.to_gmaps4rails do |location, marker|
+      marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
+      puts "locations #{location.id}"
+    end
     respond_with @json
   end
 
@@ -138,15 +173,13 @@ class LocationsController < ApplicationController
 
       oo = Excelx.new("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
       oo.default_sheet = oo.sheets.first
+      oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
-      puts "row_size #{row_size}"
       col_size = oo.last_column.size
-      puts "col_size #{col_size}"
-      puts "sheet1 #{oo.info}"
       1.upto(col_size) do |i|
-        if oo.cell(1,i)=="address" || oo.cell(1,i)=="Address"
+        if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address"
           a_n=i
-        elsif oo.cell(1,i)=="zip code" || oo.cell(1,i)=="Zip+4" || oo.cell(1,i)=="zip" || oo.cell(1,i)=="Zip"
+        elsif oo.cell(1,i)=="Zip+4" || oo.cell(1,i)=="zip code"
           z_n=i
         end 
         1.upto(row_size) do |j|
@@ -158,8 +191,8 @@ class LocationsController < ApplicationController
             end
           end
         end
-      end        
-    end
+      end
+    end        
 
     addresses.size.times do |i|
 
@@ -174,7 +207,7 @@ class LocationsController < ApplicationController
       if @location.save
         format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
         format.xml  { render :xml => @location, :status => :created, :location => @location }
-      else
+        else
         format.html { render :action => "new" }
         format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
       end
@@ -184,5 +217,25 @@ class LocationsController < ApplicationController
   def authenticate
     puts "____-----------------------------authenti_____________----------"
     redirect_to("/users/sign_in") unless user_signed_in?
+  end
+
+  def desc_add
+    @location = Location.find(params[:id])
+    @desc_add = params[:description].to_s
+    @location.description = @desc_add
+    @location.save
+
+    respond_to do |format|
+      if @location.update_attributes(params[:location])
+        format.html { redirect_to @location, notice: 'Location was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @location.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def map 
   end
 end

@@ -3,6 +3,20 @@
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
 
+<center><%= link_to t('.map', :default => t("helpers.links.map")),
+            "/houses",
+            :class => 'btn btn-primary' %></center>
+            <hr />
+<%=form_for :dump, :url=>{:controller=>"locations",
+  :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
+  Select an Excel File :
+  <%= f.file_field :excel_file %>
+  <%= submit_tag 'Submit' %>
+<%end%>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_location_path,
+            :class => 'btn btn-primary' %>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -12,6 +26,7 @@
       <th><%= model_class.human_attribute_name(:latitude) %></th>
       <th><%= model_class.human_attribute_name(:zip) %></th>
       <th><%= model_class.human_attribute_name(:owner_email) %></th>
+      <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -20,11 +35,12 @@
     <% @locations.each do |location| %>
       <tr>
         <td><%= link_to location.id, location_path(location) %></td>
-        <td><%= location.address %></td>
+        <td><%= link_to location.address, location %></td>
         <td><%= location.longitude %></td>
         <td><%= location.latitude %></td>
         <td><%= location.zip %></td>
         <td><%= location.owner_email %></td>
+        <td><%= location.description %></td>
         <td><%=l location.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
@@ -39,25 +55,4 @@
     <% end %>
   </tbody>
 </table>
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_location_path,
-            :class => 'btn btn-primary' %>
 
-<%=form_for :dump, :url=>{:controller=>"locations",
-  :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
-  Select an Excel File :
-  <%= f.file_field :excel_file %>
-  <%= submit_tag 'Submit' %>
-<%end%>
-<%= form_tag("/locations", :method => "get") do %>
-  <%= label_tag(:search, "Search for:") %>
-  <%= text_field_tag(:search) %>
-  <%= submit_tag("Search") %>
-<% end %>
-
-<br />
-<div id="mapCanvas">
-<%= gmaps("map_options" => {"auto_adjust" => "true"}, 
-  "markers" => {"data" => @json, "options" => {"list_container" => "markers_list"} }) %>
-</div>  
-<ul id="markers_list">  </ul>

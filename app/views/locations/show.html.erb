@@ -2,6 +2,10 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human %></h1>
 </div>
+<center><%= link_to t('.map', :default => t("helpers.links.map")),
+            "/houses",
+            :class => 'btn btn-primary' %></center>
+            <hr />
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:address) %>:</strong></dt>
@@ -16,6 +20,8 @@
   <dd><%= @location.zip %></dd>
   <dt><strong><%= model_class.human_attribute_name(:owner_email) %>:</strong></dt>
   <dd><%= @location.owner_email %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
+  <dd><%= @location.description %></dd>
 </dl>
 
 <div class="form-actions">

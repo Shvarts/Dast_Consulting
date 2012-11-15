@@ -1,0 +1,8 @@
+<div><%= object.address%></div>
+<div><%= object.description%></div>
+<%= form_tag(:controller => "locations", :action => "desc_add", :method => "get") do %>
+  <%= label_tag(:q, "Description:") %>
+  <%= text_area_tag(:description) %>
+  <%= text_field_tag(:id, object.id, style: "display: none;")%>
+  <%= submit_tag("Add") %>
+<% end %>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DastConsulting</title>
+  <title>DASTConsulting</title>
   <!--[if lt IE 9]>
   	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"
   	type="text/javascript"></script>
@@ -21,10 +21,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="/locations">Dast consulting</a>
+        <a class="brand" href="/locations">DAST Consulting</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li><%= link_to "Houses", locations_path %></li>
+            <li><%= link_to "Houses", "/houses" %></li>
             <li><%= link_to "Home" %></li>
             <li><%= link_to "Help" %></li>
             <%if current_user%>
@@ -41,9 +41,18 @@
 <div class="container">
 	<div class="row">
     <div class="span9"><%= yield %></div>
-		<div class="span3"></div>
-	</div>	
-</div>	
+    <div class="span3">
+      <%if current_user%>
+        <right><%= form_tag(:controller => "locations", :action => "houses", :method => "get") do %>
+        <%= label_tag(:search, "Search for:") %>
+        <%= text_field_tag(:search) %>
+        <%= submit_tag("Search") %></right>
+      <%end%>  
+<% end %>
+</div>
+  </div>  
+</div>  
+
 <%= yield :scripts %>
 </body>  
 </html>

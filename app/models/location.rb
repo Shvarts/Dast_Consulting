@@ -1,6 +1,6 @@
 class Location < ActiveRecord::Base
   acts_as_gmappable :process_geocoding => true
-  attr_accessible :address, :gmaps, :latitude, :longitude, :owner_email, :zip
+  attr_accessible :address, :gmaps, :latitude, :longitude, :owner_email, :zip, :description
   def gmaps4rails_address
   	address
   end

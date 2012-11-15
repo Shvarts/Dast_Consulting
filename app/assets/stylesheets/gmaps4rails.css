@@ -6,20 +6,23 @@
   -webkit-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
   -moz-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
   box-shadow: rgba(64, 64, 64, 0.1) 0 2px 5px;
-  width: 800px;
+  width: 1200px;
+  margin-left: 0;
 }
 
 .gmaps4rails_map {
-  width: 800px;
-  height: 400px;
+  width: 1200px;
+  height: 600px;
+  margin-left: 0;   
 }
-#mapCanvas label { width: auto; display:inline; }
+#mapCanvas label { width: auto; display:inline; margin-left: 0; }
 #mapCanvas img { max-width: none; }
 .bing_map {
    position: absolute;
    top: 20;
    left: 10;
-   width: 400px;
-   height: 400px;
+   width: 1200px;
+   height: 600px;
    border:#555555 2px solid;
+   margin-left: 0;
 }

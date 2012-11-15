@@ -2,11 +2,6 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
-
-<center><%= link_to t('.map', :default => t("helpers.links.map")),
-            "/houses",
-            :class => 'btn btn-primary' %></center>
-            <hr />
 <%=form_for :dump, :url=>{:controller=>"locations",
   :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
   Select an Excel File :
@@ -17,7 +12,7 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_location_path,
             :class => 'btn btn-primary' %>
-<table class="table table-striped">
+<table class="table1" >
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>

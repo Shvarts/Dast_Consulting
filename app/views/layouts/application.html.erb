@@ -21,14 +21,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="/locations">DAST Consulting</a>
+        <a class="brand" href="/houses">DAST Consulting</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li><%= link_to "Houses", "/houses" %></li>
-            <li><%= link_to "Home" %></li>
-            <li><%= link_to "Help" %></li>
+            <li><%= link_to "Houses", "/locations" %></li>
             <%if current_user%>
-            	<li><%= button_to 'Sign out', destroy_user_session_path, method: :delete%>
+            	<li><%= link_to 'Sign out', destroy_user_session_path, method: :delete%>
             <%else%>
             	<li><%= link_to 'Sign in', new_user_session_path%>
             <%end%>	
@@ -40,15 +38,7 @@
 
 <div class="container">
 	<div class="row">
-    <div class="span9"><%= yield %></div>
-    <div class="span3">
-      <%if current_user%>
-        <right><%= form_tag(:controller => "locations", :action => "houses", :method => "get") do %>
-        <%= label_tag(:search, "Search for:") %>
-        <%= text_field_tag(:search) %>
-        <%= submit_tag("Search") %></right>
-      <%end%>  
-<% end %>
+    <div class="span12"><%= yield %></div>
 </div>
   </div>  
 </div>  

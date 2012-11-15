@@ -201,17 +201,8 @@ class LocationsController < ApplicationController
     end
 
 #    @locations = Location.all
-#    redirect_to("/locations") 
+    redirect_to("/locations") 
 
-    respond_to do |format|
-      if @location.save
-        format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
-        format.xml  { render :xml => @location, :status => :created, :location => @location }
-        else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
-      end
-    end  
   end  
 
   def authenticate
@@ -225,14 +216,8 @@ class LocationsController < ApplicationController
     @location.description = @desc_add
     @location.save
 
-    respond_to do |format|
-      if @location.update_attributes(params[:location])
-        format.html { redirect_to @location, notice: 'Location was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
-      end
+    if @location.update_attributes(params[:location])
+      redirect_to("/houses")
     end
   end
 

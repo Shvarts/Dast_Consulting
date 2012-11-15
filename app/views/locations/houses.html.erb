@@ -1,3 +1,11 @@
+<div><%= form_tag(:controller => "locations", :action => "houses", :method => "get") do %>
+	<%= label_tag(:search, "Search for:") %>
+    <%= text_field_tag(:search) %>
+    <%= submit_tag("Search") %>
+    <%end%>  
+</div>      
 <div id="mapCanvas">
-  <%=gmaps4rails(@json)%>
+	<%center_latitude = 38.8792%>
+	<%center_longitude = -99.3268%>
+<%= gmaps({"map_options" => {"auto_adjust" => false, "auto_zoom" => true, "zoom" => 4, "center_latitude" => center_latitude, "center_longitude" => center_longitude },"markers" => {"data" => @json }})%>
 </div> 

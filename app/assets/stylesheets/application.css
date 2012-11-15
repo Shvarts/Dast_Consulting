@@ -20,3 +20,12 @@
 #search_but_header{
 	margin-top: -8px;
 }
+.sign_out{
+	position: right;
+	padding-left: 525px;
+}
+.sign_in{
+	margin-left:0.5%;
+	padding-left: 525px;
+
+}

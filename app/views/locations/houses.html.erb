@@ -1,11 +1,3 @@
-<div class="search_map	"><%= form_tag(:controller => "locations", :action => "houses", :method => "get" ) do %>
-	<%= label_tag(:search, "") %>
-    <%= text_field_tag(:search) %>
-	<%= link_to t('.Search', :default => t("helpers.links.Search")),
-            "houses",
-            :class => 'btn btn-primary search_button' %>
-    <%end%>  
-</div>      
 <div id="mapCanvas">
 	<%center_latitude = 38.8792%>
 	<%center_longitude = -99.3268%>

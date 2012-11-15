@@ -1,7 +1,7 @@
-<div><%= form_tag(:controller => "locations", :action => "houses", :method => "get") do %>
+<div class="search_map	"><%= form_tag(:controller => "locations", :action => "houses", :method => "get" ) do %>
 	<%= label_tag(:search, "") %>
     <%= text_field_tag(:search) %>
-<%= link_to t('.Search', :default => t("helpers.links.Search")),
+	<%= link_to t('.Search', :default => t("helpers.links.Search")),
             "houses",
             :class => 'btn btn-primary search_button' %>
     <%end%>  

@@ -11,3 +11,12 @@
  *= require_self
  *= require_tree .
  */
+#search_button{
+	margin-top: -8px;
+}
+.search_header{
+	margin-top: -7px;
+}
+#search_but_header{
+	margin-top: -8px;
+}

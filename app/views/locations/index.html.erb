@@ -2,8 +2,8 @@
 <%=form_for :dump, :url=>{:controller=>"locations",
   :action=>"excel"}, :method => "POST", :html => { :multipart => true } do |f| %>
   Select an Excel File :
-  <%= f.file_field :excel_file %>
-  <%= submit_tag 'Submit',  html: { class: 'btn btn-success' } %>
+  <%= f.file_field :excel_file, class: 'btn btn-primary' %>
+  <%= submit_tag 'Submit', class: 'btn btn-primary' %>
 <%end%>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
@@ -44,5 +44,6 @@
       </tr>
     <% end %>
   </tbody>
+
 </table>
 

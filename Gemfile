@@ -10,7 +10,6 @@ gem "spreadsheet"
 gem 'devise'
 gem 'roo'
 gem 'acts_as_ferret', '>= 0.5'
-gem 'gmaps-autocomplete-rails'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

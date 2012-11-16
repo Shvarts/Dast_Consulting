@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
-//= require gmaps-autocomplete
+
 $(function() {
   $("#locations th a, #locations .pagination a").live("click", function() {
     $.getScript(this.href);

@@ -6,7 +6,7 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-    @locals = Location.all
+      @locals = Location.all
     @locs = []
 
     @locals.each do |l| 
@@ -27,9 +27,33 @@ class LocationsController < ApplicationController
     end
   end
 
+  def show_location_on_map
+      @locals = Location.all
+      @locs = []
+
+      @id = params[:id]
+
+      @locals.each do |l| 
+        if l.owner_email.index(current_user.email)
+          @locs << l
+        end
+      end
+      @locs.find_all{|l| l.id==@id}
+
+      @json = @locs.first.to_gmaps4rails do |location, marker|
+        marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
+        puts "locations #{location.id}"
+        @center_latitude = @locs.first.latitude
+        puts "latitite  #{@center_latitude}"
+        @center_longitude = @locs.first.longitude        
+        puts "longitude #{@center_longitude}"
+      end
+
+  end
+
   def houses
     puts "____-----------------------------index_____________"
-    @locals = Location.all
+  @locals = Location.all
     @locs = []
 
     @locals.each do |l| 
@@ -48,12 +72,22 @@ class LocationsController < ApplicationController
     if @locations.empty?
       @locations = @locs
     end
- 
+    @search = params[:search]
+    @zoom=4
     @json = @locations.to_gmaps4rails do |location, marker|
       marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
-      puts "locations #{location.id}"
+      if @search!=nil
+        @zoom = 5
+        @center_latitude = @locations.first.latitude
+        puts "latitite  #{@center_latitude}"
+        @center_longitude = @locs.first.longitude        
+        puts "longitude #{@center_longitude}"
+      end
+
     end
-    respond_with @json
+    puts "Controller req: " + request.url.split("/").last
+    #respond_with @json
+
   end
 
   # GET /locations/1

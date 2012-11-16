@@ -14,4 +14,23 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+//= require gmaps-autocomplete
+$(function() {
+  $("#locations th a, #locations .pagination a").live("click", function() {
+    $.getScript(this.href);
+    return false;
+  });
+  $("#locations_search input").keyup(function() {
+    $.get($("#locations_search").attr("action"), $("#locations_search").serialize(), null, "script");
+    return false;
+  });
+  $("#locations_search_1 input").keyup(function() {
+    $.get($("#locations_search_1").attr("action"), $("#locations_search_1").serialize(), null, "script");
+    return false;
+  });
+});
 
+$(document).ready(function() { 
+  GmapsAutoComplete.init();
+  GmapsAutoComplete.autoCompleteInit();
+});

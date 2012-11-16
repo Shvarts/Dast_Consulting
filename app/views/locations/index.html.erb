@@ -10,41 +10,5 @@
             new_location_path,
             :class => 'btn btn-primary  ' %></div>
           </br>
-<table class="table1" >
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:address) %></th>
-      <th><%= model_class.human_attribute_name(:longitude) %></th>
-      <th><%= model_class.human_attribute_name(:latitude) %></th>
-      <th><%= model_class.human_attribute_name(:zip) %></th>
-      <th><%= model_class.human_attribute_name(:owner_email) %></th>
-      <th><%= model_class.human_attribute_name(:description) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @locations.each do |location| %>
-      <tr>
-        <td><%= link_to location.address, location %></td>
-        <td><%= location.longitude %></td>
-        <td><%= location.latitude %></td>
-        <td><%= location.zip %></td>
-        <td><%= location.owner_email %></td>
-        <td><%= location.description %></td>
-        <td><%= location.created_at %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_location_path(location), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      location_path(location),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
 
-</table>
-
+<div id = "locations"><%= render 'locations'%></div>

@@ -9,6 +9,8 @@ gem 'mysql2'
 gem "spreadsheet"
 gem 'devise'
 gem 'roo'
+gem 'acts_as_ferret', '>= 0.5'
+gem 'gmaps-autocomplete-rails'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -16,14 +18,13 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'twitter-bootstrap-rails'
   gem 'gmaps4rails'
+#  gem 'haml', '3.1.7'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
 end
-
 gem 'jquery-rails'
-
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

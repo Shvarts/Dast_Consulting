@@ -12,7 +12,16 @@ class Location < ActiveRecord::Base
       true
     end
   end
+  
   def gmaps4rails_sidebar
     address
+  end
+
+  def self.search(search)
+    if search
+      where('address LIKE ?', "%#{search}%")
+    else
+      scoped
+    end
   end
 end

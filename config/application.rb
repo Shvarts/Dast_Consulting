@@ -1,5 +1,5 @@
 require File.expand_path('../boot', __FILE__)
-
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 require 'rails/all'
 
 if defined?(Bundler)

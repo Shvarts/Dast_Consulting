@@ -194,9 +194,9 @@ class LocationsController < ApplicationController
             elsif z_n==i
               zips<<row[i].to_i 
             end
-            if row[i].to_s == 'Address' || row[i].to_s == 'address'
+            if row[i].to_s == 'Address' || row[i].to_s == 'address' || row[i].to_s == 'FullAddress1_Value'
               a_n=i
-            elsif row[i].to_s == 'Zip+4' || row[i].to_s == 'zip code'
+            elsif row[i].to_s == 'Zip+4' || row[i].to_s == 'zip code' || row[i].to_s=='Zip_Value'
               z_n=i
             end
           end
@@ -209,11 +209,13 @@ class LocationsController < ApplicationController
       oo.default_sheet = oo.sheets.first
       oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
-      col_size = oo.last_column.size
+      puts "row_size #{row_size}"
+      col_size = oo.last_column
+      puts "col_size #{col_size}"
       1.upto(col_size) do |i|
-        if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address"
+        if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address" || oo.cell(1,i) == 'FullAddress1_Value'
           a_n=i
-        elsif oo.cell(1,i)=="Zip+4" || oo.cell(1,i)=="zip code"
+        elsif oo.cell(1,i)=="Zip+4" || oo.cell(1,i)=="zip code" || oo.cell(1,i)=='Zip_Value'
           z_n=i
         end 
         1.upto(row_size) do |j|

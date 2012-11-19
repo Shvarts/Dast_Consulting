@@ -18,15 +18,15 @@ class LocationsController < ApplicationController
     if @locations.empty?
       @locations = @locs
     end
-    response = {:page => 1,
-                :total => @locations.size,
-                :records => @locations.size,
-                :rows => @locations.map { |loc| {:id => loc.id, :cell => [loc.address, loc.zip, loc.created_at.strftime("%b %d %Y"), loc.latitude, loc.longitude, loc.owner_email, loc.description, loc.parcelNumber_Value,  loc.altParcelNumber_Value, loc.name_Value, loc.name2_Value, loc.grossLandValue_Value, loc.grossImprovementValue_Value, loc.grossAssessedValue_Value, loc.neighborhoodName_Value, loc.propertyClass_Value, loc.propertySubClass_Value, loc.taxYear_Value, loc.yrConstructed_Value, loc.fullBaths_Value, loc.halfBaths_Value, loc.bedrooms_Value, loc.improvementType_Value]} }
-    }
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: response }
-    end
+#    response = {:page => 1,
+#                :total => @locations.size,
+#                :records => @locations.size,
+#                :rows => @locations.map { |loc| {:id => loc.id, :cell => [loc.address, loc.zip, loc.created_at.strftime("%b %d %Y"), loc.latitude, loc.longitude, loc.owner_email, loc.description, loc.parcelNumber_Value,  loc.altParcelNumber_Value, loc.name_Value, loc.name2_Value, loc.grossLandValue_Value, loc.grossImprovementValue_Value, loc.grossAssessedValue_Value, loc.neighborhoodName_Value, loc.propertyClass_Value, loc.propertySubClass_Value, loc.taxYear_Value, loc.yrConstructed_Value, loc.fullBaths_Value, loc.halfBaths_Value, loc.bedrooms_Value, loc.improvementType_Value]} }
+#    }
+#    respond_to do |format|
+#      format.html # index.html.erb
+ #     format.json { render json: response }
+ #   end
   end
 
   def show_location_on_map

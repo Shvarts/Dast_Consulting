@@ -1,2 +1,5 @@
-$("#locations").append("<%= escape_javascript(render(:partial => "desc_add")) %>");
-$("#new_review")[0].reset();
+var my_json = <%= raw @json %>;
+
+Gmaps.map.replaceMarkers(my_json);
+//Gmaps.map.map.setZoom(5)
+

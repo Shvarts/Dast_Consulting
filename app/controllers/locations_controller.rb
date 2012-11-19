@@ -71,12 +71,19 @@ class LocationsController < ApplicationController
       @locations = @locs
     end
     @search = params[:search]
-    @zoom=4
+    #@zoom=4
     @json = @locations.to_gmaps4rails do |location, marker|
       marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
     end
     puts "Controller req: " + request.url.split("/").last
     #respond_with @json
+
+    if @search
+      respond_to do |format|
+        format.js {}
+        format.html {}
+      end
+    end
 
   end
 

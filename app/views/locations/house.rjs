@@ -1,0 +1,1 @@
+page.insert_html :bottom, :desc_add, :partial => 'desc_add', :object => @location

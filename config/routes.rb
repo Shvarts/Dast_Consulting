@@ -5,7 +5,7 @@ DastConsulting::Application.routes.draw do
   root :to => 'locations#houses'
   match 'locations/desc_add' => 'locations#desc_add'
   match '/houses' => 'locations#houses'
-  match '/show_location_on_map' => 'locations#show_location_on_map'
+  match '/show_location_on_map/:id' => 'locations#show_location_on_map'
 #  devise_scope :user do
  #   get "sign_in", :to => "devise/sessions#new"
 #    get "sign_up", :to => "devise/sessions#new"

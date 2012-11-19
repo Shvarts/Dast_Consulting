@@ -1,8 +1,9 @@
 <div><%= object.address%></div>
 <div><%= object.zip%></div>
-<%= form_tag(:controller => "locations", :action => "desc_add", :method => "get") do %>
+
+<%= form_tag(:controller => "locations", :action => "desc_add", :method => "get", :remote => :true, :html => { :id => 'review_form' }) do %>
   <%= label_tag(:q, "") %>
   <%= text_area_tag(:description, object.description) %>
   <%= text_field_tag(:id, object.id, style: "display: none;")%>
-  <%= submit_tag("Update", :class => 'btn btn-primary')  %>
+  <%= submit_tag("Update", :class => 'btn btn-primary', :id => "submit_alert")  %>
 <% end %>

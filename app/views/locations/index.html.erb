@@ -1,4 +1,13 @@
 <%- model_class = Location -%>
+<% [:notice, :error, :alert].each do |level| %>
+  <% unless flash[level].blank? %>
+    <div class="alert-error">
+      <a class="close" href="/locations">×</a>
+      <%= content_tag :p, flash[level] %>
+    </div>
+  <% end %>
+<% end %>
+
 <div class="form_ind"><%=form_for :dump, :url=>{:controller=>"locations",
   :action=>"excel"}, :method => "POST", :html => { :multipart => true }, :class => "form_index" do |f| %>
   Select an Excel File :

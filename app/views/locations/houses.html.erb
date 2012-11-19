@@ -1,11 +1,11 @@
-<div id="mapCanvas">
-	<%if @locations.first.latitude!=nil%>
-	<%@center_latitude = @locations.first.latitude%>
-	<%@center_longitude = @locations.first.longitude%>
-	<%@zoom = 10%>
+<div id = "new_review"><div id="mapCanvas">
+	<%if !@locations.empty? %>
+		<%@center_latitude = @locations.first.latitude%>
+		<%@center_longitude = @locations.first.longitude%>
+		<%@zoom = 10%>
 	<%else%>
-	<%@center_latitude = 38.8792%>
-	<%@center_longitude = -99.3268%>
+		<%@center_latitude = 38.8792%>
+		<%@center_longitude = -99.3268%>
 		<%@zoom = 4%>
 	<%end%>
 	<%if @search != nil%>
@@ -15,3 +15,4 @@
 	<%end%>
 	<%= gmaps({"map_options" => {"auto_adjust" => false, "auto_zoom" => true, "zoom" => @zoom, "center_latitude" => @center_latitude, "center_longitude" => @center_longitude },"markers" => {"data" => @json }})%>
 </div> 
+</div>

@@ -8,6 +8,8 @@
       <th><%= model_class.human_attribute_name(:zip) %></th>
       <th><%= model_class.human_attribute_name(:owner_email) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
+      <th><%= model_class.human_attribute_name(:neighborhoodName_Value) %></th>
+      <th><%= model_class.human_attribute_name(:propertyClass_Value) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -15,12 +17,14 @@
   <tbody>
     <% @locations.each do |location| %>
       <tr>
-        <td><%= link_to location.address, "show_location_on_map" %></td>
+        <td><%= link_to location.address, "show_location_on_map/#{location.id}" %></td>
         <td><%= location.longitude %></td>
         <td><%= location.latitude %></td>
         <td><%= location.zip %></td>
         <td><%= location.owner_email %></td>
         <td><%= location.description %></td>
+        <td><%= location.neighborhoodName_Value %></td>
+        <td><%= location.propertyClass_Value %></td>
         <td><%= location.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

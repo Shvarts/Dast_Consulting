@@ -1,1 +1,2 @@
-$("#locations").html("<%= escape_javascript(render("houses")) %>");
+$("#locations").append("<%= escape_javascript(render(:partial => "desc_add")) %>");
+$("#new_review")[0].reset();

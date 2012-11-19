@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121114213158) do
+ActiveRecord::Schema.define(:version => 20121119132311) do
 
   create_table "locations", :force => true do |t|
     t.string   "address"
@@ -20,9 +20,25 @@ ActiveRecord::Schema.define(:version => 20121114213158) do
     t.boolean  "gmaps"
     t.integer  "zip"
     t.string   "owner_email"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.string   "description"
+    t.integer  "parcelNumber_Value"
+    t.string   "altParcelNumber_Value"
+    t.string   "name_Value"
+    t.string   "name2_Value"
+    t.integer  "grossLandValue_Value"
+    t.integer  "grossImprovementValue_Value"
+    t.integer  "grossAssessedValue_Value"
+    t.string   "neighborhoodName_Value"
+    t.string   "propertyClass_Value"
+    t.string   "propertySubClass_Value"
+    t.integer  "taxYear_Value"
+    t.integer  "yrConstructed_Value"
+    t.integer  "fullBaths_Value"
+    t.integer  "halfBaths_Value"
+    t.integer  "bedrooms_Value"
+    t.string   "improvementType_Value"
   end
 
   create_table "users", :force => true do |t|

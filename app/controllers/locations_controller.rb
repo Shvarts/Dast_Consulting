@@ -1,20 +1,20 @@
 class LocationsController < ApplicationController
-  before_filter :authenticate#, :except => [:index, :show]
+  before_filter :authenticate #, :except => [:index, :show]
   respond_to :json, :html
 
   # GET /locations
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-      @locals = Location.all
+    @locals = Location.all
     @locs = []
 
-    @locals.each do |l| 
+    @locals.each do |l|
       if l.owner_email.index(current_user.email)
         @locs << l
       end
     end
-    
+
     @search = params[:search]
     @locations = []
     @locs.each do |l|
@@ -28,40 +28,40 @@ class LocationsController < ApplicationController
   end
 
   def show_location_on_map
-      @locals = Location.all
-      @locs = []
-
-      @id = params[:id]
-
-      @locals.each do |l| 
-        if l.owner_email.index(current_user.email)
-          @locs << l
-        end
-      end
-      @locs.find_all{|l| l.id==@id}
-
-      @json = @locs.first.to_gmaps4rails do |location, marker|
-        marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
-        puts "locations #{location.id}"
-        @center_latitude = @locs.first.latitude
-        puts "latitite  #{@center_latitude}"
-        @center_longitude = @locs.first.longitude        
-        puts "longitude #{@center_longitude}"
-      end
-
-  end
-
-  def houses
-    puts "____-----------------------------index_____________"
-  @locals = Location.all
+    @locals = Location.all
     @locs = []
 
-    @locals.each do |l| 
+    @id = params[:id]
+
+    @locals.each do |l|
       if l.owner_email.index(current_user.email)
         @locs << l
       end
     end
-    
+    @locs.find_all { |l| l.id==@id }
+
+    @json = @locs.first.to_gmaps4rails do |location, marker|
+      marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
+      puts "locations #{location.id}"
+      @center_latitude = @locs.first.latitude
+      puts "latitite  #{@center_latitude}"
+      @center_longitude = @locs.first.longitude
+      puts "longitude #{@center_longitude}"
+    end
+
+  end
+
+  def houses
+
+    @locals = Location.all
+    @locs = []
+
+    @locals.each do |l|
+      if l.owner_email.index(current_user.email)
+        @locs << l
+      end
+    end
+
     @search = params[:search]
     @locations = []
     @locs.each do |l|
@@ -74,20 +74,31 @@ class LocationsController < ApplicationController
     end
     @search = params[:search]
     @zoom=4
+
     @json = @locations.to_gmaps4rails do |location, marker|
       marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
       if @search!=nil
         @zoom = 5
         @center_latitude = @locations.first.latitude
         puts "latitite  #{@center_latitude}"
-        @center_longitude = @locs.first.longitude        
+        @center_longitude = @locs.first.longitude
         puts "longitude #{@center_longitude}"
       end
-
     end
-    puts "Controller req: " + request.url.split("/").last
-    #respond_with @json
 
+    @search = params[:search]
+    if @search
+      respond_to do |format|
+        format.js {}
+        format.html {}
+      end
+      #respond_to do |format|
+      #  format.js   {render :formats => [:html] }
+      #end
+    end
+
+    #puts "Controller req: " + request.url.split("/").last
+    #respond_with @json
   end
 
   # GET /locations/1
@@ -161,6 +172,7 @@ class LocationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   def excel
     Spreadsheet.client_encoding = 'UTF-8'
     uploaded_io = params[:dump][:excel_file]
@@ -168,13 +180,13 @@ class LocationsController < ApplicationController
       file.write(uploaded_io.read)
     end
 
-      addresses = []
-      zips = []
-      a_n = nil
-      z_n = nil
-      row_size = 0
-      col_size = 0
-   
+    addresses = []
+    zips = []
+    a_n = nil
+    z_n = nil
+    row_size = 0
+    col_size = 0
+
     if uploaded_io.original_filename.split(".").last == "xls"
 
       book = Spreadsheet.open("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
@@ -192,7 +204,7 @@ class LocationsController < ApplicationController
             if a_n==i
               addresses<<row[i].to_s
             elsif z_n==i
-              zips<<row[i].to_i 
+              zips<<row[i].to_i
             end
             if row[i].to_s == 'Address' || row[i].to_s == 'address' || row[i].to_s == 'FullAddress1_Value'
               a_n=i
@@ -213,22 +225,22 @@ class LocationsController < ApplicationController
       col_size = oo.last_column
       puts "col_size #{col_size}"
       1.upto(col_size) do |i|
-        if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address" || oo.cell(1,i) == 'FullAddress1_Value'
+        if oo.cell(1, i)=="Address" || oo.cell(1, i)=="address" || oo.cell(1, i) == 'FullAddress1_Value'
           a_n=i
-        elsif oo.cell(1,i)=="Zip+4" || oo.cell(1,i)=="zip code" || oo.cell(1,i)=='Zip_Value'
+        elsif oo.cell(1, i)=="Zip+4" || oo.cell(1, i)=="zip code" || oo.cell(1, i)=='Zip_Value'
           z_n=i
-        end 
+        end
         1.upto(row_size) do |j|
-          if (oo.cell(j,i)!='' || oo.cell(j,i)!=nil) && j!=1
+          if (oo.cell(j, i)!='' || oo.cell(j, i)!=nil) && j!=1
             if a_n==i
-              addresses<<oo.cell(j,i).to_s
+              addresses<<oo.cell(j, i).to_s
             elsif z_n==i
-              zips<<oo.cell(j,i) 
+              zips<<oo.cell(j, i)
             end
           end
         end
       end
-    end        
+    end
 
     addresses.size.times do |i|
 
@@ -237,9 +249,9 @@ class LocationsController < ApplicationController
     end
 
 #    @locations = Location.all
-    redirect_to("/locations") 
+    redirect_to("/locations")
 
-  end  
+  end
 
   def authenticate
     puts "____-----------------------------authenti_____________----------"
@@ -257,6 +269,6 @@ class LocationsController < ApplicationController
     end
   end
 
-  def map 
+  def map
   end
 end

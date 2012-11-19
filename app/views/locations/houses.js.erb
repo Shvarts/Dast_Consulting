@@ -1,1 +1,4 @@
-$("#locations").html("<%= escape_javascript(render("houses")) %>");
+var my_json = <%= raw @json %>;
+
+Gmaps.map.replaceMarkers(my_json);
+//Gmaps.map.map.setZoom(5)

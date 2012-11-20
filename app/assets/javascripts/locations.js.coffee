@@ -24,30 +24,30 @@ $ ->
     #source_w = content_width * 0.5 - 15
     #date_w = content_width * 0.2 - 15
 
-  koef = 0.043
+  koef = 0.12
 
   address_w = parseInt(content_width * koef)
-  zip_w = parseInt(content_width * koef)
-  created_at_w = parseInt(content_width * koef)
-  latitude_w = parseInt(content_width * koef)
-  longitude_w = parseInt(content_width * koef)
+  zip_w = parseInt(content_width * koef)-100
+  created_at_w = parseInt(content_width * koef) - 50
+  latitude_w = parseInt(content_width * koef) - 80
+  longitude_w = parseInt(content_width * koef) - 80
   owner_email_w = parseInt(content_width * koef)
   description_w = parseInt(content_width * koef)
-  parcel_number_w = parseInt(content_width * koef)
+  parcel_number_w = parseInt(content_width * koef) - 50
   alt_parcel_number_w = parseInt(content_width * koef)
   name_w = parseInt(content_width * koef)
   name2_w = parseInt(content_width * koef)
-  gross_land_value_w = parseInt(content_width * koef)
+  gross_land_value_w = parseInt(content_width * koef) - 30
   gross_improvement_value_w = parseInt(content_width * koef)
   gross_assessed_value_w = parseInt(content_width * koef)
   neighborhood_name_w = parseInt(content_width * koef)
-  property_class_w = parseInt(content_width * koef)
+  property_class_w = parseInt(content_width * koef) - 30
   property_sub_class_w = parseInt(content_width * koef)
-  tax_year_w = parseInt(content_width * koef)
-  yr_constructed_w = parseInt(content_width * koef)
-  full_baths_w = parseInt(content_width * koef)
-  half_baths_w = parseInt(content_width * koef)
-  bedrooms_w = parseInt(content_width * koef)
+  tax_year_w = parseInt(content_width * koef) - 80
+  yr_constructed_w = parseInt(content_width * koef) - 30
+  full_baths_w = parseInt(content_width * koef) - 80
+  half_baths_w = parseInt(content_width * koef) - 80
+  bedrooms_w = parseInt(content_width * koef) - 80
   improvement_type_w = parseInt(content_width * koef)
 
 

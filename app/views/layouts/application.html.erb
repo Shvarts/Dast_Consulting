@@ -32,12 +32,12 @@
 
             <%if current_user%>
               <%if request.url.split("/").last=="locations" || request.url.split("/").last=="locations"%>
-              <li class="search_header">
-                  <%= form_tag("/locations",:class => "navbar-search pull-left header_form", :method => "get", :id => "locations_search") do %>
-                    <%= label_tag(:search, "") %>
-                    <%= text_field_tag(:search) %>
-                    <%= submit_tag("Search", :class => 'btn btn-primary', :id => 'search_but_header') %>
-                  <% end %>
+              <!--<li class="search_header">-->
+                  <!--<%#= form_tag("/locations",:class => "navbar-search pull-left header_form", :method => "get", :id => "locations_search") do %>-->
+                    <!--<%#= label_tag(:search, "") %>-->
+                    <!--<%#= text_field_tag(:search) %>-->
+                    <!--<%#= submit_tag("Search", :class => 'btn btn-primary', :id => 'search_but_header') %>-->
+                  <%# end %>
                   <%else%>
                   <li class="search_header">
                   <%= form_tag("/houses",:remote=>"true",:class => "navbar-search pull-left header_form", :method => "get", :id => "map_locations_search") do %>

@@ -62,7 +62,7 @@ $ ->
     ignoreCase: true
     sortorder: "desc"
     sortname: "address"
-#    height: "475px"
+    height: "400px"
     shrinkToFit: false
     width: content_width
     url: 'locations'
@@ -170,7 +170,7 @@ $ ->
     viewrecords: true
     loadonce: true
     #  loadui: "dasable"
-    caption: "Bids"
+    caption: "Locations"
     onSelectRow: (ids) ->
       for_save = []
       for_highlight = []

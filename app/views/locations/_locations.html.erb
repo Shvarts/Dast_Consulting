@@ -8,8 +8,21 @@
       <th><%= model_class.human_attribute_name(:zip) %></th>
       <th><%= model_class.human_attribute_name(:owner_email) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
+      <th><%= model_class.human_attribute_name(:parcelNumber_Value) %></th>
+      <th><%= model_class.human_attribute_name(:altParcelNumber_Value) %></th>
+      <th><%= model_class.human_attribute_name(:name_Value) %></th>
+      <th><%= model_class.human_attribute_name(:name2_Value) %></th>
+      <th><%= model_class.human_attribute_name(:grossLandValue_Value) %></th>
+      <th><%= model_class.human_attribute_name(:grossImprovementValue_Value) %></th>
+      <th><%= model_class.human_attribute_name(:grossAssessedValue_Value) %></th>
       <th><%= model_class.human_attribute_name(:neighborhoodName_Value) %></th>
       <th><%= model_class.human_attribute_name(:propertyClass_Value) %></th>
+      <th><%= model_class.human_attribute_name(:taxYear_Value) %></th>
+      <th><%= model_class.human_attribute_name(:yrConstructed_Value) %></th>
+      <th><%= model_class.human_attribute_name(:fullBaths_Value) %></th>
+      <th><%= model_class.human_attribute_name(:halfBaths_Value) %></th>
+      <th><%= model_class.human_attribute_name(:bedrooms_Value) %></th>
+      <th><%= model_class.human_attribute_name(:improvementType_Value) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -23,8 +36,21 @@
         <td><%= location.zip %></td>
         <td><%= location.owner_email %></td>
         <td><%= location.description %></td>
+        <td><%= location.parcelNumber_Value %></td>
+        <td><%= location.altParcelNumber_Value %></td>
+        <td><%= location.name_Value %></td>
+        <td><%= location.name2_Value %></td>
+        <td><%= location.grossLandValue_Value %></td>
+        <td><%= location.grossImprovementValue_Value %></td>
+        <td><%= location.grossAssessedValue_Value %></td>
         <td><%= location.neighborhoodName_Value %></td>
         <td><%= location.propertyClass_Value %></td>
+        <td><%= location.taxYear_Value %></td>
+        <td><%= location.yrConstructed_Value %></td>
+        <td><%= location.fullBaths_Value %></td>
+        <td><%= location.halfBaths_Value %></td>
+        <td><%= location.bedrooms_Value %></td>
+        <td><%= location.improvementType_Value %></td>
         <td><%= location.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

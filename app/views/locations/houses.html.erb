@@ -5,10 +5,8 @@
       <% @center_longitude = -99.3268 %>
       <% @zoom = 4 %>
     <% end %>
-    <% if @search != nil %>
-      <% @zoom = 10 %>
-      <% @center_latitude = @locations.first.latitude %>
-      <% @center_longitude = @locations.first.longitude %>
+    <% if @search!=nil %>
+      <% @zoom = 4 %>
     <% end %>
     <%= gmaps({"map_options" => {"auto_adjust" => @zoom.blank?,
                                  "auto_zoom" => true,

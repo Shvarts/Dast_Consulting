@@ -1,20 +1,43 @@
-.table1{
-	margin-right: auto;
-	margin-left: auto;
+.table1 {
+  margin-right: auto;
+  margin-left: auto;
 }
-.search_button{
-	margin-top: -15px;
+
+.search_button {
+  margin-top: -15px;
 }
-.form_index{
-	display: inline;
-	margin-right:1%;
+
+.form_index {
+  display: inline;
+  margin-right: 1%;
 }
-form{
-	display: inline;
+
+form {
+  display: inline;
 }
-#index_button{
-	margin-right:1%;
+
+#index_button {
+  margin-right: 1%;
 }
-.index_form{
-	margin-left:1%;
+
+.index_form {
+  margin-left: 1%;
+}
+
+#left_bar {
+  position: fixed;
+  left: 0px;
+  top: 50px;
+  padding: 10px;
+  background-color: #2c2c2c;
+  padding-bottom: 1px;
+  border-radius: 0px 10px 10px 0px;
+  .btn {
+    width: 100%;
+  }
+}
+
+.ui-pg-selbox{
+  height: 20px;
+  line-height: 20px;
 }

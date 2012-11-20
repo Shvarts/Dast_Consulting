@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+// azaza= require jquery.jqGrid.min
 //= require twitter/bootstrap
 //= require_tree .
 
@@ -30,46 +31,46 @@ $(function() {
   });
 });
 
-$(document).ready(function() { 
-  GmapsAutoComplete.init();
-  GmapsAutoComplete.autoCompleteInit();
-});
-
-function drawItems(theBounds) {
-    $.get(function(newItemData) {
-        Gmaps4Rails.replace_markers(newItemData);
-    });
-}
-
-jQuery.ajaxSetup({ 
-  'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
-})
-
-jQuery.fn.submitWithAjax = function() {
-  this.submit(function() {
-    $.post(this.action, $(this).serialize(), null, "script");
-    return false;
-  })
-  return this;
-};
-
-$(document).ready(function() {
-  $("#new_review").submitWithAjax();
-})
-
-document.observe("dom:loaded", function() {
- Ajax.Responders.register({
-  onCreate: function(request) {
-   var csrf_meta_tag = $$('meta[name=csrf-token]')[0];
-   if (csrf_meta_tag) {
-    var header = 'X-CSRF-Token',
-      token = csrf_meta_tag.readAttribute('content');
- 
-    if (!request.options.requestHeaders) {
-     request.options.requestHeaders = {};
-    }
-    request.options.requestHeaders[header] = token;
-   }
-  }
- });
-});
+//$(document).ready(function() {
+//  GmapsAutoComplete.init();
+//  GmapsAutoComplete.autoCompleteInit();
+//});
+//
+//function drawItems(theBounds) {
+//    $.get(function(newItemData) {
+//        Gmaps4Rails.replace_markers(newItemData);
+//    });
+//}
+//
+//jQuery.ajaxSetup({
+//  'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
+//})
+//
+//jQuery.fn.submitWithAjax = function() {
+//  this.submit(function() {
+//    $.post(this.action, $(this).serialize(), null, "script");
+//    return false;
+//  })
+//  return this;
+//};
+//
+//$(document).ready(function() {
+//  $("#new_review").submitWithAjax();
+//})
+//
+//document.observe("dom:loaded", function() {
+// Ajax.Responders.register({
+//  onCreate: function(request) {
+//   var csrf_meta_tag = $$('meta[name=csrf-token]')[0];
+//   if (csrf_meta_tag) {
+//    var header = 'X-CSRF-Token',
+//      token = csrf_meta_tag.readAttribute('content');
+//
+//    if (!request.options.requestHeaders) {
+//     request.options.requestHeaders = {};
+//    }
+//    request.options.requestHeaders[header] = token;
+//   }
+//  }
+// });
+//});

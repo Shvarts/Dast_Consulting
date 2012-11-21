@@ -76,33 +76,22 @@ class LocationsController < ApplicationController
   end
 
   def houses
-    puts "____-----------------------------index_____________"
-  @locals = Location.all
-    @locs = []
-
-    @locals.each do |l| 
-      if l.owner_email.index(current_user.email)
-        @locs << l
-      end
-    end
-    
     @search = params[:search]
+    puts "---------------------------------SEarch ----------#{@search}"
     @locations = []
-    @locs.each do |l|
-      if l.address.index(@search.to_s) && @search !="" && @search !=nil
-        @locations<<l
-      end
-    end
-    if @locations.empty?
-      @locations = @locs
-    end
-    @search = params[:search]
-    #@zoom=4
+    @locations = Location.search(@search, current_user.email)
+    puts "#{@locations.first.address}"
+
     @json = @locations.to_gmaps4rails do |location, marker|
       marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
     end
-    puts "Controller req: " + request.url.split("/").last
-    #respond_with @json
+      if @locations.empty?
+        @center_latitude = 38.8792 
+        @center_longitude = -99.3268 
+        @zoom = 4
+      else
+        @zoom = 10
+      end 
 
     if @search
       respond_to do |format|
@@ -129,6 +118,7 @@ class LocationsController < ApplicationController
   def new
     @location = Location.new
 
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @location }
@@ -145,14 +135,24 @@ class LocationsController < ApplicationController
   def create
     @location = Location.new(params[:location])
     @location.owner_email = current_user.email
+    @locations = Location.where(:owner_email => current_user.email)
 
     respond_to do |format|
-      if @location.save
-        format.html { redirect_to @location, notice: 'Location was successfully created.' }
-        format.json { render json: @location, status: :created, location: @location }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
+      @locations.each do |loc| 
+        if (@location.longitude.to_json != loc.longitude.to_json || @location.latitude.to_json != loc.latitude.to_json) && @location.save
+          longitude = @location.longitude.to_json
+          latitude = @location.latitude.to_json
+          puts "----------------LOngitude__#{longitude}----------------" 
+          puts "----------------Latitude__#{latitude}----------------" 
+     #     puts "----------------LOngitude__#{loc.longitude.to_json}----------------" 
+     #     puts "----------------Latitude__#{loc.latitude.to_json}----------------" 
+         # @location.already_create_location(@location, current_user.email)
+          format.html { redirect_to @location, notice: 'Location was successfully created.' }
+          format.json { render json: @location, status: :created, location: @location }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @location.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

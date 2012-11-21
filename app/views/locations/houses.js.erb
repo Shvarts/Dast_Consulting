@@ -1,5 +1,9 @@
 var my_json = <%= raw @json %>;
 
 Gmaps.map.replaceMarkers(my_json);
-//Gmaps.map.map.setZoom(10)
+ if (Gmaps.map.map.getZoom() > 10) 
+ {
+ 	Gmaps.map.map.setZoom(10);
+ }
+
 

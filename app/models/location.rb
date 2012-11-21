@@ -17,9 +17,20 @@ class Location < ActiveRecord::Base
     address
   end
 
-  def self.search(search)
+  def self.already_created_location(location, user_email)
+    locations = Location.where(:owner_email => user_email)
+    locations.each do |loc| 
+      if location.longitude != loc.longitude || location.latitude != loc.latitude
+        return true
+      else
+        return false
+      end
+    end
+  end
+
+  def self.search(search, email)
     if search
-      where('address LIKE ?', "%#{search}%")
+      where("owner_email = '#{email}' and address LIKE '%#{search}%'")
     else
       scoped
     end

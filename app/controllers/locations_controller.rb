@@ -124,7 +124,7 @@ class LocationsController < ApplicationController
 
   # POST /locations
   # POST /locations.json
-  def create
+   def create
     @location = Location.new( :address => params[:address],
                               :zip => params[:zip],
                               :description => params[:description],
@@ -146,37 +146,17 @@ class LocationsController < ApplicationController
                               :improvementType_Value => params[:improvement_type]
     )
     @location.owner_email = current_user.email
-    @locations = Location.where(:owner_email => current_user.email)
 
     respond_to do |format|
-<<<<<<< HEAD
-      @locations.each do |loc| 
-        if (@location.longitude.to_json != loc.longitude.to_json || @location.latitude.to_json != loc.latitude.to_json) && @location.save
-          longitude = @location.longitude.to_json
-          latitude = @location.latitude.to_json
-          puts "----------------LOngitude__#{longitude}----------------" 
-          puts "----------------Latitude__#{latitude}----------------" 
-     #     puts "----------------LOngitude__#{loc.longitude.to_json}----------------" 
-     #     puts "----------------Latitude__#{loc.latitude.to_json}----------------" 
-         # @location.already_create_location(@location, current_user.email)
-          format.html { redirect_to @location, notice: 'Location was successfully created.' }
-          format.json { render json: @location, status: :created, location: @location }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @location.errors, status: :unprocessable_entity }
-        end
-=======
       if @location.save
         format.html { redirect_to locations_path, notice: 'Location was successfully created.' }
         format.json { render json: @location, status: :created, location: @location }
       else
         format.html { redirect_to locations_path, error: 'Error creating location' }
         format.json { render json: @location.errors, status: :unprocessable_entity }
->>>>>>> 9295b93c70e7c610d9e41bc949d4a9d58a63f27b
       end
     end
   end
-
   # PUT /locations/1
   # PUT /locations/1.json
   def update

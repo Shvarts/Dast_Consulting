@@ -76,6 +76,7 @@ class LocationsController < ApplicationController
   end
 
   def houses
+    
     @search = params[:search]
     @locations = []
     @locations = Location.search(@search, current_user.email)

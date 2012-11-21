@@ -6,7 +6,7 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     puts "____-----------------------------index_____________"
-    @locs = Location.where(:owner_email => current_user.email)
+    @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
 
     @search = params[:search]
     @locations = []
@@ -69,7 +69,7 @@ class LocationsController < ApplicationController
         puts "locations #{location.id}"
         @center_latitude = @locs.first.latitude
         puts "latitite  #{@center_latitude}"
-        @center_longitude = @locs.first.longitude        
+        @center_longitude = @locs.first.longitude
         puts "longitude #{@center_longitude}"
       end
 
@@ -77,21 +77,12 @@ class LocationsController < ApplicationController
 
   def houses
     @search = params[:search]
-    puts "---------------------------------SEarch ----------#{@search}"
     @locations = []
     @locations = Location.search(@search, current_user.email)
-    puts "#{@locations.first.address}"
 
     @json = @locations.to_gmaps4rails do |location, marker|
       marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
     end
-      if @locations.empty?
-        @center_latitude = 38.8792 
-        @center_longitude = -99.3268 
-        @zoom = 4
-      else
-        @zoom = 10
-      end 
 
     if @search
       respond_to do |format|
@@ -133,11 +124,31 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    @location = Location.new(params[:location])
+    @location = Location.new( :address => params[:address],
+                              :zip => params[:zip],
+                              :description => params[:description],
+                              :parcelNumber_Value => params[:parcel_number],
+                              :altParcelNumber_Value => params[:alt_parcel_number],
+                              :name_Value => params[:name],
+                              :name2_Value => params[:name2],
+                              :grossLandValue_Value => params[:gross_land_value],
+                              :grossImprovementValue_Value => params[:gross_improvement_value],
+                              :grossAssessedValue_Value => params[:gross_assessed_value],
+                              :neighborhoodName_Value => params[:neighborhood_name],
+                              :propertyClass_Value => params[:property_class],
+                              :propertySubClass_Value => params[:property_sub_class],
+                              :taxYear_Value => params[:tax_year],
+                              :yrConstructed_Value => params[:yr_constructed],
+                              :fullBaths_Value => params[:full_baths],
+                              :halfBaths_Value => params[:half_baths],
+                              :bedrooms_Value => params[:bedrooms],
+                              :improvementType_Value => params[:improvement_type]
+    )
     @location.owner_email = current_user.email
     @locations = Location.where(:owner_email => current_user.email)
 
     respond_to do |format|
+<<<<<<< HEAD
       @locations.each do |loc| 
         if (@location.longitude.to_json != loc.longitude.to_json || @location.latitude.to_json != loc.latitude.to_json) && @location.save
           longitude = @location.longitude.to_json
@@ -153,6 +164,14 @@ class LocationsController < ApplicationController
           format.html { render action: "new" }
           format.json { render json: @location.errors, status: :unprocessable_entity }
         end
+=======
+      if @location.save
+        format.html { redirect_to locations_path, notice: 'Location was successfully created.' }
+        format.json { render json: @location, status: :created, location: @location }
+      else
+        format.html { redirect_to locations_path, error: 'Error creating location' }
+        format.json { render json: @location.errors, status: :unprocessable_entity }
+>>>>>>> 9295b93c70e7c610d9e41bc949d4a9d58a63f27b
       end
     end
   end
@@ -202,9 +221,9 @@ class LocationsController < ApplicationController
       z_n = nil
       row_size = 0
       col_size = 0
-      
+
       parcelNumber_Value = []
-      altParcelNumber_Value = [] 
+      altParcelNumber_Value = []
       name_Value=[]
       name2_Value=[]
       grossLandValue_Value=[]
@@ -219,7 +238,7 @@ class LocationsController < ApplicationController
       halfBaths_Value=[]
       bedrooms_Value=[]
       improvementType_Value=[]
-      
+
       pn_v=nil
       apn_v=nil
       n_v=nil
@@ -237,7 +256,7 @@ class LocationsController < ApplicationController
       br_v=nil
       it_v=nil
 
-   
+
     if uploaded_io.original_filename.split(".").last == "xls"
 
       book = Spreadsheet.open("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
@@ -255,7 +274,7 @@ class LocationsController < ApplicationController
             if a_n==i
               addresses<<row[i].to_s
             elsif z_n==i
-              zips<<row[i].to_i 
+              zips<<row[i].to_i
             end
             if row[i].to_s == 'Address' || row[i].to_s == 'address' || row[i].to_s == 'FullAddress1_Value'
               a_n=i
@@ -312,50 +331,50 @@ class LocationsController < ApplicationController
           br_v=i
         elsif oo.cell(1,i)=="ImprovementType_Value"
           it_v=i
-        end 
+        end
         1.upto(row_size) do |j|
           if (oo.cell(j,i)!='' || oo.cell(j,i)!=nil) && j!=1
             if a_n==i
               addresses<<oo.cell(j,i).to_s
             elsif z_n==i
-              zips<<oo.cell(j,i) 
+              zips<<oo.cell(j,i)
             elsif pn_v==i
-              parcelNumber_Value<<oo.cell(j,i) 
+              parcelNumber_Value<<oo.cell(j,i)
             elsif apn_v==i
-              altParcelNumber_Value<<oo.cell(j,i) 
+              altParcelNumber_Value<<oo.cell(j,i)
             elsif n_v==i
-              name_Value<<oo.cell(j,i) 
+              name_Value<<oo.cell(j,i)
             elsif n2_v==i
-              name2_Value<<oo.cell(j,i) 
+              name2_Value<<oo.cell(j,i)
             elsif glv_v==i
-              grossLandValue_Value<<oo.cell(j,i) 
+              grossLandValue_Value<<oo.cell(j,i)
             elsif giv_v==i
-              grossImprovementValue_Value<<oo.cell(j,i) 
+              grossImprovementValue_Value<<oo.cell(j,i)
             elsif gav_v==i
-              grossAssessedValue_Value<<oo.cell(j,i) 
+              grossAssessedValue_Value<<oo.cell(j,i)
             elsif nhn_v==i
-              neighborhoodName_Value<<oo.cell(j,i) 
+              neighborhoodName_Value<<oo.cell(j,i)
             elsif pc_v==i
-              propertyClass_Value<<oo.cell(j,i) 
+              propertyClass_Value<<oo.cell(j,i)
             elsif psc_v==i
-              propertySubClass_Value<<oo.cell(j,i) 
+              propertySubClass_Value<<oo.cell(j,i)
             elsif ty_v==i
-              taxYear_Value<<oo.cell(j,i) 
+              taxYear_Value<<oo.cell(j,i)
             elsif yc_v==i
-              yrConstructed_Value<<oo.cell(j,i) 
+              yrConstructed_Value<<oo.cell(j,i)
             elsif fb_v==i
-              fullBaths_Value<<oo.cell(j,i) 
+              fullBaths_Value<<oo.cell(j,i)
             elsif hb_v==i
-              halfBaths_Value<<oo.cell(j,i) 
+              halfBaths_Value<<oo.cell(j,i)
             elsif br_v==i
-              bedrooms_Value<<oo.cell(j,i) 
+              bedrooms_Value<<oo.cell(j,i)
             elsif it_v==i
-              improvementType_Value<<oo.cell(j,i) 
+              improvementType_Value<<oo.cell(j,i)
             end
           end
         end
       end
-    end        
+    end
 
     addresses.size.times do |i|
 
@@ -364,9 +383,9 @@ class LocationsController < ApplicationController
     end
 
 #    @locations = Location.all
-    redirect_to("/locations") 
+    redirect_to("/locations")
 
-  end  
+  end
 
   def authenticate
     puts "____-----------------------------authenti_____________----------"
@@ -383,10 +402,19 @@ class LocationsController < ApplicationController
       respond_to do |format|
         format.html {redirect_to("/houses")}
         format.js
-      end      
+      end
     end
   end
 
-  def map 
+  def map
+  end
+
+  def delete_record
+    Location.find(params[:id]).destroy
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.js { render js: "alert('Bid destroyed!')" }
+    end
   end
 end

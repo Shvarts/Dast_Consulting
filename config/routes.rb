@@ -4,6 +4,7 @@ DastConsulting::Application.routes.draw do
   match 'locations/excel' => 'locations#excel'
   root :to => 'locations#houses'
   match 'locations/desc_add' => 'locations#desc_add'
+  match 'locations/delete_record' => 'locations#delete_record'
   match '/houses' => 'locations#houses'
   match '/show_location_on_map/:id' => 'locations#show_location_on_map'
 #  devise_scope :user do

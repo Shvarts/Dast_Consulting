@@ -61,7 +61,7 @@ $ ->
   $("#list").jqGrid(
     ignoreCase: true
     sortorder: "desc"
-    sortname: "address"
+    sortname: "created_at"
     height: "400px"
     shrinkToFit: false
     width: content_width
@@ -75,10 +75,12 @@ $ ->
       name: "address"
       index: "address"
       width: address_w
+      editable: true
     ,
       name: "zip"
       index: "zip"
       width: zip_w
+      editable: true
     ,
       name: "created_at"
       index: "created_at"
@@ -99,70 +101,87 @@ $ ->
       name: "description"
       index: "description"
       width: description_w
+      editable: true
     ,
       name: "parcel_number"
       index: "parcel_number"
       width: parcel_number_w
+      editable: true
     ,
       name: "alt_parcel_number"
       index: "alt_parcel_number"
       width: alt_parcel_number_w
+      editable: true
     ,
       name: "name"
       index: "name"
       width: name_w
+      editable: true
     ,
       name: "name2"
       index: "name2"
       width: name2_w
+      editable: true
     ,
       name: "gross_land_value"
       index: "gross_land_value"
       width: gross_land_value_w
+      editable: true
     ,
       name: "gross_improvement_value"
       index: "gross_improvement_value"
       width: gross_improvement_value_w
+      editable: true
     ,
       name: "gross_assessed_value"
       index: "gross_assessed_value"
       width: gross_assessed_value_w
+      editable: true
     ,
       name: "neighborhood_name"
       index: "neighborhood_name"
       width: neighborhood_name_w
+      editable: true
     ,
       name: "property_class"
       index: "property_class"
       width: property_class_w
+      editable: true
     ,
       name: "property_sub_class"
       index: "property_sub_class"
       width: property_sub_class_w
+      editable: true
     ,
       name: "tax_year"
       index: "tax_year"
       width: tax_year_w
+      editable: true
     ,
       name: "yr_constructed"
       index: "yr_constructed"
       width: yr_constructed_w
+      editable: true
     ,
       name: "full_baths"
       index: "full_baths"
       width: full_baths_w
+      editable: true
     ,
       name: "half_baths"
       index: "half_baths"
       width: half_baths_w
+      editable: true
     ,
       name: "bedrooms"
       index: "bedrooms"
       width: bedrooms_w
+      editable: true
     ,
       name: "improvement_type"
       index: "improvement_type"
       width: improvement_type_w
+      editable: true
     ]
     rowNum: 50
     rowList: [5, 10, 20, 50, 100]
@@ -178,12 +197,24 @@ $ ->
       bid_for_export = ids
       current_bid_name = $('#list').jqGrid('getCell', ids, 0)
   ).navGrid "#pager",
-    { edit: false, add: false, del: false, search: false, refresh: true, loadui: "enable" }
+    { edit: false, add: true, del: true, search: false, refresh: true, loadui: "enable" }
     { url: '#' } # edit options
-    { url: '#' } #  add options
-    { url: "/bids/delete_bid", msg: 'Are you sure?\nThis action is irreversable.', caption: 'Delete selected Bid', mtype: 'POST'} # delete options
+    {url: '/locations',
+    height:690,
+    width: 380,
+    reloadAfterSubmit:false,
+    mtype: 'POST',
+    closeAfterAdd: true,
+    afterComplete: ->
+      $("#list").jqGrid("setGridParam",
+        datatype:'json').trigger("reloadGrid")
+#      $("#list").trigger("reloadGrid")
+#      $("#list").jqGrid "setGridParam",
+#        loadonce: true
+    } #  add options
+    {url: "/locations/delete_record",  msg: 'Are you sure?\nThis action is irreversable.', caption: 'Delete selected Bid', mtype: 'POST'} # delete options
     {} # search options
-    {}
-#  refresh options
-#  $("#list [id]tr:first").trigger "click"
-  $("#list").jqGrid('filterToolbar', { searchOnEnter: false, defaultSearch: 'cn' })
+    {} # refresh options
+  #j("#list [id]tr:first").trigger "click"
+  $("#list").jqGrid('filterToolbar', { searchOnEnter:false, defaultSearch: 'cn' });
+

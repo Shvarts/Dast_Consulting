@@ -11,9 +11,10 @@
       <% @zoom = 10 %>
     <% end %>
     <% puts "---------------------#{@locations.size != 1 ? true : false}-------------------"%>
-    <%= gmaps({"map_options" => {"auto_adjust" => true,
+    <%= gmaps({"map_options" => {"auto_adjust" => @locations.empty? ? false : true,
                                  "auto_zoom" => @locations.size != 1 ? true : false,
-                                 "zoom" => @zoom},
+                                 "zoom" => @zoom, "center_latitude" => @center_latitude, 
+                                 "center_longitude" => @center_longitude },
                "markers" => {"data" => @json}}) %>
   </div>
 </div>

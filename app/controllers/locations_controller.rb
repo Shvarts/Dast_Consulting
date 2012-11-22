@@ -79,8 +79,8 @@ class LocationsController < ApplicationController
     
     @search = params[:search]
     @locations = []
-    @locations = Location.search(@search, current_user.email)
-
+    @locations = Location.where(:owner_email => current_user.email)
+    @locations = @locations.search(@search)
     @json = @locations.to_gmaps4rails do |location, marker|
       marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
     end

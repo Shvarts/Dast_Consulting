@@ -28,9 +28,9 @@ class Location < ActiveRecord::Base
     end
   end
 
-  def self.search(search, email)
+  def self.search(search)
     if search
-      where("owner_email = '#{email}' and address LIKE '%#{search}%'")
+      where("address LIKE '%#{search}%'")
     else
       scoped
     end

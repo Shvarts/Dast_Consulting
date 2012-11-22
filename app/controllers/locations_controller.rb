@@ -380,12 +380,19 @@ class LocationsController < ApplicationController
     @location.description = @desc_add
     @location.save
 
-    if @location.update_attributes(params[:location])
+    @id = params[:id]
+    @marker = Location.find(params[:id])
+    @json = @marker.to_gmaps4rails do |location, marker|
+      marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
+      marker.json({:id => location.id})
+    end
+
+    #if @location.update_attributes(params[:location])
       respond_to do |format|
         format.html {redirect_to("/houses")}
         format.js
       end
-    end
+    #end
   end
 
   def map

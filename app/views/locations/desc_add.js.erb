@@ -1,1 +1,11 @@
-alert("sxsxsxsx")
+//for (var i = 0; i < Gmaps.map.markers.length; i++) {
+//  if (Gmaps.map.markers[i].id == <%#= @id %>) {
+//    var mark = Gmaps.map.markers[i];
+//    Gmaps.map.clearMarker(mark)
+//  }
+//}
+center = Gmaps.map.map.getCenter();
+zoom = Gmaps.map.map.getZoom();
+Gmaps.map.addMarkers(<%= raw @json %>);
+Gmaps.map.map.setCenter(center);
+Gmaps.map.map.setZoom(zoom);

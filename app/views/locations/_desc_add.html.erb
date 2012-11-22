@@ -1,7 +1,7 @@
 <div><%= object.address%></div>
 <div><%= object.zip%></div>
 
-<%= form_tag(:controller => "locations", :action => "desc_add", :method => "get", :remote => :true, :html => { :id => 'review_form' }) do %>
+<%= form_tag("locations/desc_add", :remote => true) do %>
   <%= label_tag(:q, "") %>
   <%= text_area_tag(:description, object.description) %>
   <%= text_field_tag(:id, object.id, style: "display: none;")%>

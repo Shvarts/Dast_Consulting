@@ -12,5 +12,5 @@ Gmaps.map.map.setZoom(zoom);
 
 
 $('.description_message').fadeIn("slow").delay(800).fadeOut("slow");
-$('.descr_memo').width(($('.descr_memo').width()-20).toString());
+$('.descr_memo[resized="false"]').width(($('.descr_memo').width()-20).toString()).attr("resized","true");
 

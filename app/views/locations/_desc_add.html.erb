@@ -7,7 +7,7 @@
 
 <%= form_tag("/locations/desc_add", :remote => true) do %>
   <%= label_tag(:q, "") %>
-  <%= text_area_tag(:description, object.description, :class => "descr_memo") %>
+  <%= text_area_tag(:description, object.description, :class => "descr_memo", :resized => false) %>
   <%= text_field_tag(:id, object.id, style: "display: none;")%>
   <%= submit_tag("Update", :class => 'btn btn-primary', :id => "submit_alert")  %>
 <% end %>

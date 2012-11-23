@@ -41,4 +41,15 @@ form {
 table.ui-pg-table select.ui-pg-selbox{
   height: 20px;
   line-height: 20px;
-  }
+}
+
+.description_message{
+  border: 1px solid lightGreen;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 15px;
+  background-color: lightGreen;
+  text-align: center;
+  color: #006400;
+  display: none;
+}

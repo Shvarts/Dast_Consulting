@@ -5,7 +5,6 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.json
   def index
-    puts "____-----------------------------index_____________"
     @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
 
     @search = params[:search]
@@ -50,33 +49,29 @@ class LocationsController < ApplicationController
       format.html # index.html.erb
       format.json { render json: response }
     end
-
   end
 
   def show_location_on_map
-      @locs = Location.where(:owner_email => current_user.email)
-      @locations = []
-      @id = params[:id]
+    @locs = Location.where(:owner_email => current_user.email)
+    @locations = []
+    @id = params[:id]
 
-      puts "locs------------------ #{@locs}"
-      @locations = Location.where(:owner_email=>current_user.email, :id => @id)
-      puts "locs_after------------------ #{@locations}"
-      if @locations.empty?
-        @locations=@locs
-      end
-      @json = @locations.first.to_gmaps4rails do |location, marker|
-        marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
-        puts "locations #{location.id}"
-        @center_latitude = @locs.first.latitude
-        puts "latitite  #{@center_latitude}"
-        @center_longitude = @locs.first.longitude
-        puts "longitude #{@center_longitude}"
-      end
+    @center_latitude = @locs.first.latitude
+    @center_longitude = @locs.first.longitude
 
+    @locations = Location.where(:owner_email=>current_user.email, :id => @id)
+
+    if @locations.empty?
+      @locations=@locs
+    end
+
+    @json = @locations.first.to_gmaps4rails do |location, marker|
+      marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
+      marker.json({:id => location.id})
+    end
   end
 
   def houses
-    
     @search = params[:search]
     @locations = []
     @locations = Location.where(:owner_email => current_user.email)
@@ -92,7 +87,6 @@ class LocationsController < ApplicationController
         format.html {}
       end
     end
-
   end
 
   # GET /locations/1
@@ -370,7 +364,6 @@ class LocationsController < ApplicationController
   end
 
   def authenticate
-    puts "____-----------------------------authenti_____________----------"
     redirect_to("/users/sign_in") unless user_signed_in?
   end
 

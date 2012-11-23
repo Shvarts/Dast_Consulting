@@ -51,7 +51,7 @@ $ ->
   improvement_type_w = parseInt(content_width * koef)
 
 
-  delete_row_id = 1
+  delete_row_id = 0
   bid_for_export = null
 
   for_save = []
@@ -191,11 +191,7 @@ $ ->
     #  loadui: "dasable"
     caption: "Locations"
     onSelectRow: (ids) ->
-      for_save = []
-      for_highlight = []
       delete_row_id = ids
-      bid_for_export = ids
-      current_bid_name = $('#list').jqGrid('getCell', ids, 0)
   ).navGrid "#pager",
     { edit: false, add: true, del: true, search: false, refresh: true, loadui: "enable" }
     { url: '#' } # edit options
@@ -215,6 +211,18 @@ $ ->
     {url: "/locations/delete_record",  msg: 'Are you sure?\nThis action is irreversable.', caption: 'Delete selected Bid', mtype: 'POST'} # delete options
     {} # search options
     {} # refresh options
+  .navButtonAdd "#pager"
+    caption:"Show on map"
+    buttonicon: "ui-icon-pin-s"
+    position: "last"
+    title:""
+    cursor: "pointer"
+    datatype: "json"
+    onClickButton: ->
+      unless delete_row_id == 0
+        window.location.replace("/show_location_on_map/#{delete_row_id}")
+      else
+        alert("Please select a location")
   #j("#list [id]tr:first").trigger "click"
   $("#list").jqGrid('filterToolbar', { searchOnEnter:false, defaultSearch: 'cn' });
 

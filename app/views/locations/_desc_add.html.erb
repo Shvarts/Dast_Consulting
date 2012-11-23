@@ -1,9 +1,13 @@
-<div><%= object.address%></div>
+<div id="<%= object.id %>_success" class="description_message">
+  Description was successfully updated.
+</div>
+
+<div class="infowindow_address"><%= object.address%></div>
 <div><%= object.zip%></div>
 
-<%= form_tag("locations/desc_add", :remote => true) do %>
+<%= form_tag("/locations/desc_add", :remote => true) do %>
   <%= label_tag(:q, "") %>
-  <%= text_area_tag(:description, object.description) %>
+  <%= text_area_tag(:description, object.description, :class => "descr_memo") %>
   <%= text_field_tag(:id, object.id, style: "display: none;")%>
   <%= submit_tag("Update", :class => 'btn btn-primary', :id => "submit_alert")  %>
 <% end %>

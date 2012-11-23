@@ -9,3 +9,8 @@ zoom = Gmaps.map.map.getZoom();
 Gmaps.map.addMarkers(<%= raw @json %>);
 Gmaps.map.map.setCenter(center);
 Gmaps.map.map.setZoom(zoom);
+
+
+$('.description_message').fadeIn("slow").delay(800).fadeOut("slow");
+$('.descr_memo').width(($('.descr_memo').width()-20).toString());
+

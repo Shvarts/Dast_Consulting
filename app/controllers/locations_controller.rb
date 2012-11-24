@@ -50,7 +50,7 @@ class LocationsController < ApplicationController
     respond_to do |format|
       format.html 
       format.json { render json: response }
-      format.js { render} 
+      format.js 
     end
   end
 
@@ -395,7 +395,7 @@ class LocationsController < ApplicationController
     respond_to do |format|
       format.html {redirect_to("/locations")}
       format.json { render json: @response }
-      format.js {render "index.js.erb"} 
+      format.js  
     end
     puts "   ------------ after redirect_to -----excel -------"
  end

@@ -1,1 +1,3 @@
-$("#locations").html("<%= escape_javascript(render("locations")) %>");
+<%= remotipart_response do %>
+	jQuery("#mygrid").trigger("reloadGrid")
+<%end%>

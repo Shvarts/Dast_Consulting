@@ -45,9 +45,12 @@ class LocationsController < ApplicationController
                                                                           loc.bedrooms_Value,
                                                                           loc.improvementType_Value]} }
     }
+        puts "   ------------ to respond_to -----INDEZ -------"
+
     respond_to do |format|
-      format.html # index.html.erb
+      format.html 
       format.json { render json: response }
+      format.js 
     end
   end
 
@@ -187,6 +190,7 @@ class LocationsController < ApplicationController
       return
     end
     uploaded_io = params[:dump][:excel_file]
+
     File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
       file.write(uploaded_io.read)
     end
@@ -357,11 +361,44 @@ class LocationsController < ApplicationController
       @location = Location.new(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])
       @location.save
     end
-
+      @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
 #    @locations = Location.all
-    redirect_to("/locations")
-
-  end
+    @response = {:page => 1,
+                :total => @locations.size,
+                :records => @locations.size,
+                :rows => @locations.map { |loc| {:id => loc.id, :cell => [loc.address,
+                                                                          loc.zip,
+                                                                          loc.created_at.strftime("%b %d %Y"),
+                                                                          loc.latitude,
+                                                                          loc.longitude,
+                                                                          loc.owner_email,
+                                                                          loc.description,
+                                                                          loc.parcelNumber_Value,
+                                                                          loc.altParcelNumber_Value,
+                                                                          loc.name_Value,
+                                                                          loc.name2_Value,
+                                                                          loc.grossLandValue_Value,
+                                                                          loc.grossImprovementValue_Value,
+                                                                          loc.grossAssessedValue_Value,
+                                                                          loc.neighborhoodName_Value,
+                                                                          loc.propertyClass_Value,
+                                                                          loc.propertySubClass_Value,
+                                                                          loc.taxYear_Value,
+                                                                          loc.yrConstructed_Value,
+                                                                          loc.fullBaths_Value,
+                                                                          loc.halfBaths_Value,
+                                                                          loc.bedrooms_Value,
+                                                                          loc.improvementType_Value]} }
+    }
+    puts "---------------to redirect_to ------- excel ---------"
+    #redirect_to :controller => 'locations', :action => 'index'
+    respond_to do |format|
+      format.html {redirect_to("/locations")}
+      format.json { render json: @response }
+      format.js  
+    end
+    puts "   ------------ after redirect_to -----excel -------"
+ end
 
   def authenticate
     redirect_to("/users/sign_in") unless user_signed_in?

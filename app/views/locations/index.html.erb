@@ -8,6 +8,10 @@
   <% end %>
 <% end %>
 
+<% content_for :scripts do %>
+    <%= javascript_include_tag 'upload' %>
+<% end %>
+
 <div class="content" style="width:100%">
 
   <div class="form_ind"><%= form_for :dump, :remote => true, :url => {:controller => "locations",

@@ -80,7 +80,7 @@ class LocationsController < ApplicationController
     @locations = Location.where(:owner_email => current_user.email)
     @locations = @locations.search(@search)
     @json = @locations.to_gmaps4rails do |location, marker|
-      marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location})
+      marker.infowindow render_to_string(:partial => "desc_add", :locals => {:object => location}, :id => "infowindow")
       marker.json({:id => location.id})
     end
 
@@ -194,7 +194,8 @@ class LocationsController < ApplicationController
     File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
       file.write(uploaded_io.read)
     end
-
+      p_bar       = ProgressBar.new('Copying', 100)
+      p_bar.finish
       addresses = []
       zips = []
       a_n = nil

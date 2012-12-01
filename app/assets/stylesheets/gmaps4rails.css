@@ -1,4 +1,7 @@
-
+.yellow{
+    width: 500px;
+    height: 400px;
+}
 .gmaps4rails_map {
  display:block;
  margin-top: 42px;

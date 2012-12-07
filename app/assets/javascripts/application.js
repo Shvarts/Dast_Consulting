@@ -15,6 +15,7 @@
 //= require jquery.remotipart
 // azaza= require jquery.jqGrid.min
 //= require twitter/bootstrap
+//= require jquery-fileupload
 //= require_tree .
 
 $(function() {

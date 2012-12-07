@@ -45,7 +45,6 @@ class LocationsController < ApplicationController
                                                                           loc.bedrooms_Value,
                                                                           loc.improvementType_Value]} }
     }
-        puts "   ------------ to respond_to -----INDEZ -------"
 
     respond_to do |format|
       format.html 

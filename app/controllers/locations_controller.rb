@@ -6,7 +6,9 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
-
+    gon.locations_size = Location.all.size
+    gon.watch.dynamic_locations_size = @dynamic_locations_size 
+    gon.row_size = @gon_row_size
     @search = params[:search]
     @locations = []
     @locs.each do |l|
@@ -190,9 +192,8 @@ class LocationsController < ApplicationController
       return
     end
     uploaded_io = params[:dump][:excel_file]
-    gon.locations_size = Location.all.size
+    gonlocations_size = Location.all.size
     @dynamic_locations_size = Location.all.size
-    gon.watch.dynamic_locations_size = @dynamic_locations_size 
 
     File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
       file.write(uploaded_io.read)
@@ -250,7 +251,7 @@ class LocationsController < ApplicationController
           col_size +=1
         end
       end
-      gon.row_size = row_size
+      @gon_row_size = row_size
       col_size+=1
       gon.col_size = col_size      
       row_size.times do |i|
@@ -277,9 +278,8 @@ class LocationsController < ApplicationController
       oo.default_sheet = oo.sheets.first
       oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
-      gon.row_size = row_size
+      @gon_row_size = row_size
       puts "row_size #{row_size}"
-      col_size = oo.last_column
       puts "col_size #{col_size}"
       1.upto(col_size) do |i|
         if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address" || oo.cell(1,i) == 'FullAddress1_Value'

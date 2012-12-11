@@ -46,7 +46,7 @@ class LocationsController < ApplicationController
                                                                           loc.improvementType_Value]} }
     }
         puts "   ------------ to respond_to -----INDEZ -------"
-
+    gon.start_locations_size = Location.all.size
     respond_to do |format|
       format.html 
       format.json { render json: response }
@@ -190,17 +190,19 @@ class LocationsController < ApplicationController
       return
     end
     uploaded_io = params[:dump][:excel_file]
+    gon.locations_size = Location.all.size
+    @dynamic_locations_size = Location.all.size
+    gon.watch.dynamic_locations_size = @dynamic_locations_size 
 
     File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
       file.write(uploaded_io.read)
     end
-      p_bar       = ProgressBar.new('Copying', 100)
-      p_bar.finish
       addresses = []
       zips = []
       a_n = nil
       z_n = nil
       row_size = 0
+      gon.row_size = row_size
       col_size = 0
 
       parcelNumber_Value = []
@@ -248,7 +250,9 @@ class LocationsController < ApplicationController
           col_size +=1
         end
       end
+      gon.row_size = row_size
       col_size+=1
+      gon.col_size = col_size      
       row_size.times do |i|
         sheet1.each do |row|
           if row!='' || row!=nil
@@ -265,6 +269,7 @@ class LocationsController < ApplicationController
           end
         end
       end
+
 #      load("#{Rails.root}/app/assets/files/Property/address.rb")
     else
 
@@ -272,6 +277,7 @@ class LocationsController < ApplicationController
       oo.default_sheet = oo.sheets.first
       oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
+      gon.row_size = row_size
       puts "row_size #{row_size}"
       col_size = oo.last_column
       puts "col_size #{col_size}"

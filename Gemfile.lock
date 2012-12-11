@@ -57,6 +57,9 @@ GEM
     ferret (0.11.8.4)
       rake
     gmaps4rails (1.5.6)
+    gon (4.0.1)
+      actionpack (>= 2.3.0)
+      json
     google-spreadsheet-ruby (0.3.0)
       google_drive (>= 0.3.0)
     google_drive (0.3.2)
@@ -180,6 +183,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   devise
   gmaps4rails
+  gon
   jquery-rails
   mysql2
   paperclip

@@ -2,6 +2,18 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+
+$(document).ready ->
+ 
+      $bar = $(".bar")
+      pc = parseInt((gon.dynamic_locations_size - gon.locations_size) / gon.row_size * 100, 10)
+      $bar.width $bar.width() + "#{pc}%"
+
+      $('.bar').css('width', pc + '%')
+
+      $('.bar').text("Proccessing...")
+      alert (gon.locations_size)
+
 $ ->
   $("#map_locations_search").submit ->
     valuesToSubmit = $(this).serialize()

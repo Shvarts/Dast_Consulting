@@ -4,15 +4,15 @@
 
 
 $(document).ready ->
- 
-      $bar = $(".bar")
-      pc = parseInt((gon.dynamic_locations_size - gon.locations_size) / gon.row_size * 100, 10)
-      $bar.width $bar.width() + "#{pc}%"
-
-      $('.bar').css('width', pc + '%')
-
-      $('.bar').text("Proccessing...")
-      alert (gon.locations_size)
+  $("#dump_excel_file").unbind().change ->
+      update_bar = (data) ->
+        pc = parseInt((gon.watch('dynamic_locations_size', interval: 1000, update_bar)-gon.locations_size) / gon.row_size * 100, 10)  
+        alert (gon.locations_size)
+        $('.bar').progressbar value: data
+        $('.bar').text("Proccessing...")
+        $('.bar').css('width', pc + '%')
+      alert (gon.watch('dynamic_locations_size', interval: 1000, update_bar))
+      
 
 $ ->
   $("#map_locations_search").submit ->

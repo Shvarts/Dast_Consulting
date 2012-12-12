@@ -6,9 +6,9 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
-    gon.locations_size = Location.all.size
-    gon.watch.dynamic_locations_size = @dynamic_locations_size 
-    gon.row_size = @gon_row_size
+    #if @gon_row_size
+    progress_bar
+    #end
     @search = params[:search]
     @locations = []
     @locs.each do |l|
@@ -48,12 +48,13 @@ class LocationsController < ApplicationController
                                                                           loc.improvementType_Value]} }
     }
         puts "   ------------ to respond_to -----INDEZ -------"
-    gon.start_locations_size = Location.all.size
-    respond_to do |format|
-      format.html 
-      format.json { render json: response }
-      format.js 
-    end
+  end
+
+  def progress_bar
+    gon.row_size = @gon_row_size
+    gon.locations_size = Location.all.size
+    gon.watch.dynamic_locations_size = @dynamic_locations_size     
+    return [gon.row_size, gon.locations_size, gon.watch.dynamic_locations_size]
   end
 
   def show_location_on_map
@@ -185,6 +186,7 @@ class LocationsController < ApplicationController
     end
   end
   def excel
+    @dynamic_locations_size = Location.all.size
     Spreadsheet.client_encoding = 'UTF-8'
     if params[:dump].blank?
       flash[:error] = "No file selected"
@@ -192,8 +194,7 @@ class LocationsController < ApplicationController
       return
     end
     uploaded_io = params[:dump][:excel_file]
-    gonlocations_size = Location.all.size
-    @dynamic_locations_size = Location.all.size
+    gon.locations_size = Location.all.size
 
     File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
       file.write(uploaded_io.read)
@@ -243,6 +244,8 @@ class LocationsController < ApplicationController
 
     if uploaded_io.original_filename.split(".").last == "xls"
 
+      @dynamic_locations_size = Location.all.size
+      puts "----------------------------------dynamic_locations_size------ #{@dynamic_locations_size}"
       book = Spreadsheet.open("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
       sheet1 = book.worksheet 0
       sheet1.each do |row|

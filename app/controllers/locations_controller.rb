@@ -7,7 +7,10 @@ class LocationsController < ApplicationController
   def index
     @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
     #if @gon_row_size
-    progress_bar
+    puts "--------------------@gon_row_size ____index______--------- #{@gon_row_size}"
+    gon.row_size = @gon_row_size
+    gon.locations_size = Location.all.size
+    gon.watch.dynamic_locations_size = @dynamic_locations_size     
     #end
     @search = params[:search]
     @locations = []
@@ -48,6 +51,12 @@ class LocationsController < ApplicationController
                                                                           loc.improvementType_Value]} }
     }
         puts "   ------------ to respond_to -----INDEZ -------"
+    respond_to do |format|
+      format.html 
+      format.json { render json: response }
+      format.js 
+    end
+
   end
 
   def progress_bar
@@ -204,7 +213,8 @@ class LocationsController < ApplicationController
       a_n = nil
       z_n = nil
       row_size = 0
-      gon.row_size = row_size
+      @gon_row_size = row_size
+
       col_size = 0
 
       parcelNumber_Value = []
@@ -365,7 +375,7 @@ class LocationsController < ApplicationController
         end
       end
     end
-
+    puts "-------------------@gon_row_size ----------------- @#{@gon_row_size}--------"
     addresses.size.times do |i|
 
       @location = Location.new(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])

@@ -2,15 +2,19 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+$ ->
+  $(".index_button").click ->
+    $.ajax(
+      url: "/locations/excel"
+      success: update_bar = (data) ->
+        $('.bar').css('width', data + '%')
+      $('.bar').text("Proccessing...")
+      $('.bar').css('width', parseInt(((gon.watch('dynamic_locations_size', interval: 1000, update_bar))/gon.row_size) * 100, 10) + '%')
+      gon.watch('dynamic_locations_size', interval: 1000, update_bar)
+    )
 
 $(document).ready ->
   $(".index_button").click ->
-      update_bar = (data) ->
-        $('.bar').text("Proccessing...")
-        $('.bar').css('width', data + '%')
-        alert (gon.watch('dynamic_locations_size', interval: 1000, update_bar))
-      $('.bar').css('width', parseInt((gon.watch('dynamic_locations_size', interval: 1000, update_bar)) / 2 * 100, 10) + '%')
-      gon.watch('dynamic_locations_size', interval: 1000, update_bar)
 
 
 $ ->

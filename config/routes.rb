@@ -1,7 +1,7 @@
 DastConsulting::Application.routes.draw do
   devise_for :users
-  resources :locations 
-  match 'locations/excel' => 'locations#excel'
+  match '/locations' => 'locations#index'
+  match '/locations/excel' => 'locations#excel'
   root :to => 'locations#houses'
   match 'locations/desc_add' => 'locations#desc_add'
   match 'locations/delete_record' => 'locations#delete_record'

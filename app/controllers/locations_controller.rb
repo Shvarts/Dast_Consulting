@@ -1,17 +1,20 @@
 class LocationsController < ApplicationController
   before_filter :authenticate#, :except => [:index, :show]
-  respond_to :json, :html
-
+  respond_to :json, :html, :js
+  @@gon_row_size = 0
   # GET /locations
   # GET /locations.json
   def index
     @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
-    #if @gon_row_size
     puts "--------------------@gon_row_size ____index______--------- #{@gon_row_size}"
-    gon.row_size = @gon_row_size
-    gon.locations_size = Location.all.size
-    gon.watch.dynamic_locations_size = @dynamic_locations_size     
-    #end
+#    @dynamic_locations_size = Location.all.size
+    gon.row_size = Rails.cache.read("gon_row_size")
+    gon.locations_size = Rails.cache.read("locations_size")
+    gon.watch.dynamic_locations_size = Rails.cache.read("dynamic_locations_size")     
+    puts "--------------------@gon_row_size ____index______--------- #{Rails.cache.read("gon_row_size")}"
+    puts "--------------------gon.locations_size____index______--------- #{Rails.cache.read("locations_size")}"
+    puts "--------------------gon.dynamic_locations_size____index______--------- #{Rails.cache.read("dynamic_locations_size")}"
+
     @search = params[:search]
     @locations = []
     @locs.each do |l|
@@ -196,6 +199,9 @@ class LocationsController < ApplicationController
   end
   def excel
     @dynamic_locations_size = Location.all.size
+    gon.locations_size = Location.all.size
+
+    Rails.cache.write("locations_size", Location.all.size)
     Spreadsheet.client_encoding = 'UTF-8'
     if params[:dump].blank?
       flash[:error] = "No file selected"
@@ -213,7 +219,7 @@ class LocationsController < ApplicationController
       a_n = nil
       z_n = nil
       row_size = 0
-      @gon_row_size = row_size
+      @@gon_row_size = row_size
 
       col_size = 0
 
@@ -264,7 +270,8 @@ class LocationsController < ApplicationController
           col_size +=1
         end
       end
-      @gon_row_size = row_size
+      @@gon_row_size = row_size
+      puts "-------------------@gon_row_size ----------------- @#{@gon_row_size}--------"
       col_size+=1
       gon.col_size = col_size      
       row_size.times do |i|
@@ -291,7 +298,8 @@ class LocationsController < ApplicationController
       oo.default_sheet = oo.sheets.first
       oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
-      @gon_row_size = row_size
+      @@gon_row_size = row_size
+      puts "-------------------@gon_row_size ----------------- @#{@gon_row_size}--------"
       puts "row_size #{row_size}"
       puts "col_size #{col_size}"
       1.upto(col_size) do |i|
@@ -375,14 +383,21 @@ class LocationsController < ApplicationController
         end
       end
     end
-    puts "-------------------@gon_row_size ----------------- @#{@gon_row_size}--------"
+    Rails.cache.write("gon_row_size", addresses.size)
+    gon.row_size = addresses.size
+
     addresses.size.times do |i|
 
       @location = Location.new(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])
       @location.save
+      Rails.cache.write("dynamic_locations_size", Location.all.size)
+      gon.watch.dynamic_locations_size = Location.all.size
+
+      puts "----------EXCEL-------Location.all.size_______#{Location.all.size}"
     end
       @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
-#    @locations = Location.all
+#    @locations = Location.all+
+    @@gon_row_size = row_size
     @response = {:page => 1,
                 :total => @locations.size,
                 :records => @locations.size,

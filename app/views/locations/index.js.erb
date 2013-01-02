@@ -1,3 +1,6 @@
+//<%= remotipart_response do %>
+//	jQuery("#mygrid").trigger("reloadGrid")
+//<%end%>
 <%= remotipart_response do %>
-	jQuery("#mygrid").trigger("reloadGrid")
+	 $("#list").setGridParam({datatype:'json', page:1}).trigger('reloadGrid');
 <%end%>

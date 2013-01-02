@@ -1,29 +1,14 @@
 class LocationsController < ApplicationController
   before_filter :authenticate#, :except => [:index, :show]
   respond_to :json, :html, :js
-  @@gon_row_size = 0
   # GET /locations
   # GET /locations.json
   def index
-    @locs = Location.where(:owner_email => current_user.email).order("created_at DESC")
-    puts "--------------------@gon_row_size ____index______--------- #{@gon_row_size}"
-#    @dynamic_locations_size = Location.all.size
-    gon.row_size = Rails.cache.read("gon_row_size")
-    gon.locations_size = Rails.cache.read("locations_size")
-    gon.watch.dynamic_locations_size = Rails.cache.read("dynamic_locations_size")     
-    puts "--------------------@gon_row_size ____index______--------- #{Rails.cache.read("gon_row_size")}"
-    puts "--------------------gon.locations_size____index______--------- #{Rails.cache.read("locations_size")}"
-    puts "--------------------gon.dynamic_locations_size____index______--------- #{Rails.cache.read("dynamic_locations_size")}"
+    @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
 
-    @search = params[:search]
-    @locations = []
-    @locs.each do |l|
-      if l.address.index(@search.to_s) && @search !="" && @search !=nil
-        @locations<<l
-      end
-    end
-    if @locations.empty?
-      @locations = @locs
+    if !params[:dump].blank?
+      puts "----------Index----params[:dump]:   #{params[:dump][:excel_file]}"
+      excel()
     end
 
     response = {:page => 1,
@@ -53,7 +38,6 @@ class LocationsController < ApplicationController
                                                                           loc.bedrooms_Value,
                                                                           loc.improvementType_Value]} }
     }
-        puts "   ------------ to respond_to -----INDEZ -------"
     respond_to do |format|
       format.html 
       format.json { render json: response }
@@ -197,30 +181,25 @@ class LocationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  def excel
-    @dynamic_locations_size = Location.all.size
-    gon.locations_size = Location.all.size
 
-    Rails.cache.write("locations_size", Location.all.size)
-    Spreadsheet.client_encoding = 'UTF-8'
+  def excel
     if params[:dump].blank?
       flash[:error] = "No file selected"
       redirect_to("/locations")
       return
     end
+
     uploaded_io = params[:dump][:excel_file]
-    gon.locations_size = Location.all.size
 
     File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
       file.write(uploaded_io.read)
     end
+
       addresses = []
       zips = []
       a_n = nil
       z_n = nil
       row_size = 0
-      @@gon_row_size = row_size
-
       col_size = 0
 
       parcelNumber_Value = []
@@ -259,9 +238,6 @@ class LocationsController < ApplicationController
 
 
     if uploaded_io.original_filename.split(".").last == "xls"
-
-      @dynamic_locations_size = Location.all.size
-      puts "----------------------------------dynamic_locations_size------ #{@dynamic_locations_size}"
       book = Spreadsheet.open("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
       sheet1 = book.worksheet 0
       sheet1.each do |row|
@@ -270,8 +246,6 @@ class LocationsController < ApplicationController
           col_size +=1
         end
       end
-      @@gon_row_size = row_size
-      puts "-------------------@gon_row_size ----------------- @#{@gon_row_size}--------"
       col_size+=1
       gon.col_size = col_size      
       row_size.times do |i|
@@ -291,17 +265,13 @@ class LocationsController < ApplicationController
         end
       end
 
-#      load("#{Rails.root}/app/assets/files/Property/address.rb")
     else
 
       oo = Excelx.new("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
       oo.default_sheet = oo.sheets.first
       oo.default_sheet = oo.sheets.first
       row_size = oo.last_row
-      @@gon_row_size = row_size
-      puts "-------------------@gon_row_size ----------------- @#{@gon_row_size}--------"
-      puts "row_size #{row_size}"
-      puts "col_size #{col_size}"
+
       1.upto(col_size) do |i|
         if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address" || oo.cell(1,i) == 'FullAddress1_Value'
           a_n=i
@@ -383,56 +353,9 @@ class LocationsController < ApplicationController
         end
       end
     end
-    Rails.cache.write("gon_row_size", addresses.size)
-    gon.row_size = addresses.size
-
-    addresses.size.times do |i|
-
-      @location = Location.new(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])
-      @location.save
-      Rails.cache.write("dynamic_locations_size", Location.all.size)
-      gon.watch.dynamic_locations_size = Location.all.size
-
-      puts "----------EXCEL-------Location.all.size_______#{Location.all.size}"
-    end
-      @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
-#    @locations = Location.all+
-    @@gon_row_size = row_size
-    @response = {:page => 1,
-                :total => @locations.size,
-                :records => @locations.size,
-                :rows => @locations.map { |loc| {:id => loc.id, :cell => [loc.address,
-                                                                          loc.zip,
-                                                                          loc.created_at.strftime("%b %d %Y"),
-                                                                          loc.latitude,
-                                                                          loc.longitude,
-                                                                          loc.owner_email,
-                                                                          loc.description,
-                                                                          loc.parcelNumber_Value,
-                                                                          loc.altParcelNumber_Value,
-                                                                          loc.name_Value,
-                                                                          loc.name2_Value,
-                                                                          loc.grossLandValue_Value,
-                                                                          loc.grossImprovementValue_Value,
-                                                                          loc.grossAssessedValue_Value,
-                                                                          loc.neighborhoodName_Value,
-                                                                          loc.propertyClass_Value,
-                                                                          loc.propertySubClass_Value,
-                                                                          loc.taxYear_Value,
-                                                                          loc.yrConstructed_Value,
-                                                                          loc.fullBaths_Value,
-                                                                          loc.halfBaths_Value,
-                                                                          loc.bedrooms_Value,
-                                                                          loc.improvementType_Value]} }
-    }
-    puts "---------------to redirect_to ------- excel ---------"
-    #redirect_to :controller => 'locations', :action => 'index'
-    respond_to do |format|
-      format.html {redirect_to("/locations")}
-      format.json { render json: @response }
-      format.js  
-    end
-    puts "   ------------ after redirect_to -----excel -------"
+      addresses.size.times do |i|
+        @location = Location.create(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])
+      end
  end
 
   def authenticate

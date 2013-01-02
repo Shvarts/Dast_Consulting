@@ -17,7 +17,7 @@
   <div class="bar" style="width: %;" id = "bar"></div>
 </div>
   <div class="form_ind"><%= form_for :dump, :remote => true, :url => {:controller => "locations",
-                                                     :action => "excel"}, :method => "POST", :html => {:multipart => true} do |f| %>
+                                                     :action => "index"}, :method => "POST", :html => {:multipart => true} do |f| %>
       Select an Excel File :
         <%= f.file_field :excel_file %>
         <%= submit_tag 'Upload', class: 'btn btn-primary index_button' %>

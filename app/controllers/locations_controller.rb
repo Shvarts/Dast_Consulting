@@ -5,10 +5,185 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
-
+    @locations_size = Location.all.size
+    gon.locations_size = @locations_size
+    @row_size = 0
+    gon.row_size = @row_size
+    @dynamic_locations_size = 0
     if !params[:dump].blank?
-      puts "----------Index----params[:dump]:   #{params[:dump][:excel_file]}"
-      excel()
+      uploaded_io = params[:dump][:excel_file]
+
+      File.open(Rails.root.join('app', 'assets', 'files', uploaded_io.original_filename), 'wb+') do |file|
+        file.write(uploaded_io.read)
+      end
+
+        addresses = []
+        zips = []
+        a_n = nil
+        z_n = nil
+        row_size = 0
+        col_size = 0
+
+        parcelNumber_Value = []
+        altParcelNumber_Value = []
+        name_Value=[]
+        name2_Value=[]
+        grossLandValue_Value=[]
+        grossImprovementValue_Value=[]
+        grossAssessedValue_Value=[]
+        neighborhoodName_Value=[]
+        propertyClass_Value=[]
+        propertySubClass_Value=[]
+        taxYear_Value=[]
+        yrConstructed_Value=[]
+        fullBaths_Value=[]
+        halfBaths_Value=[]
+        bedrooms_Value=[]
+        improvementType_Value=[]
+
+        pn_v=nil
+        apn_v=nil
+        n_v=nil
+        n2_v=nil
+        glv_v=nil
+        giv_v=nil
+        gav_v=nil
+        nhn_v=nil
+        pc_v=nil
+        psc_v=nil
+        ty_v=nil
+        yc_v=nil
+        fb_v=nil
+        hb_v=nil
+        br_v=nil
+        it_v=nil
+
+
+      if uploaded_io.original_filename.split(".").last == "xls"
+        book = Spreadsheet.open("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
+        sheet1 = book.worksheet 0
+        sheet1.each do |row|
+          row_size = row.size
+          if row[0]!=''
+            col_size +=1
+          end
+        end
+        col_size+=1
+        gon.col_size = col_size      
+        row_size.times do |i|
+          sheet1.each do |row|
+            if row!='' || row!=nil
+              if a_n==i
+                addresses<<row[i].to_s
+              elsif z_n==i
+                zips<<row[i].to_i
+              end
+              if row[i].to_s == 'Address' || row[i].to_s == 'address' || row[i].to_s == 'FullAddress1_Value'
+                a_n=i
+              elsif row[i].to_s == 'Zip+4' || row[i].to_s == 'zip code' || row[i].to_s=='Zip_Value'
+                z_n=i
+              end
+            end
+          end
+        end
+
+      else
+
+        oo = Excelx.new("#{Rails.root}/app/assets/files/#{uploaded_io.original_filename}")
+        oo.default_sheet = oo.sheets.first
+        oo.default_sheet = oo.sheets.first
+        row_size = oo.last_row
+
+        1.upto(col_size) do |i|
+          if oo.cell(1,i)=="Address" || oo.cell(1,i)=="address" || oo.cell(1,i) == 'FullAddress1_Value'
+            a_n=i
+          elsif oo.cell(1,i)=="Zip+4" || oo.cell(1,i)=="zip code" || oo.cell(1,i)=='Zip_Value'
+            z_n=i
+          elsif oo.cell(1,i)=="ParcelNumber_Value"
+            pn_v=i
+          elsif oo.cell(1,i)=="AltParcelNumber_Value"
+            apn_v=i
+          elsif oo.cell(1,i)=="Name_Value"
+            n_v=i
+          elsif oo.cell(1,i)=="Name2_Value"
+            n2_v=i
+          elsif oo.cell(1,i)=="GrossLandValue_Value"
+            glv_v=i
+          elsif oo.cell(1,i)=="GrossImprovementValue_Value"
+            giv_v=i
+          elsif oo.cell(1,i)=="GrossAssessedValue_Value"
+            gav_v=i
+          elsif oo.cell(1,i)=="NeighborhoodName_Value"
+            nhn_v=i
+          elsif oo.cell(1,i)=="PropertyClass_Value"
+            pc_v=i
+          elsif oo.cell(1,i)=="PropertySubClass_Value"
+            psc_v=i
+          elsif oo.cell(1,i)=="TaxYear_Value"
+            ty_v=i
+          elsif oo.cell(1,i)=="YrConstructed_Value"
+            yc_v=i
+          elsif oo.cell(1,i)=="FullBaths_Value"
+            fb_v=i
+          elsif oo.cell(1,i)=="HalfBaths_Value"
+            hb_v=i
+          elsif oo.cell(1,i)=="Bedrooms_Value"
+            br_v=i
+          elsif oo.cell(1,i)=="ImprovementType_Value"
+            it_v=i
+          end
+          1.upto(row_size) do |j|
+            if (oo.cell(j,i)!='' || oo.cell(j,i)!=nil) && j!=1
+              if a_n==i
+                addresses<<oo.cell(j,i).to_s
+              elsif z_n==i
+                zips<<oo.cell(j,i)
+              elsif pn_v==i
+                parcelNumber_Value<<oo.cell(j,i)
+              elsif apn_v==i
+                altParcelNumber_Value<<oo.cell(j,i)
+              elsif n_v==i
+                name_Value<<oo.cell(j,i)
+              elsif n2_v==i
+                name2_Value<<oo.cell(j,i)
+              elsif glv_v==i
+                grossLandValue_Value<<oo.cell(j,i)
+              elsif giv_v==i
+                grossImprovementValue_Value<<oo.cell(j,i)
+              elsif gav_v==i
+                grossAssessedValue_Value<<oo.cell(j,i)
+              elsif nhn_v==i
+                neighborhoodName_Value<<oo.cell(j,i)
+              elsif pc_v==i
+                propertyClass_Value<<oo.cell(j,i)
+              elsif psc_v==i
+                propertySubClass_Value<<oo.cell(j,i)
+              elsif ty_v==i
+                taxYear_Value<<oo.cell(j,i)
+              elsif yc_v==i
+                yrConstructed_Value<<oo.cell(j,i)
+              elsif fb_v==i
+                fullBaths_Value<<oo.cell(j,i)
+              elsif hb_v==i
+                halfBaths_Value<<oo.cell(j,i)
+              elsif br_v==i
+                bedrooms_Value<<oo.cell(j,i)
+              elsif it_v==i
+                improvementType_Value<<oo.cell(j,i)
+              end
+            end
+          end
+        end
+      end
+        @row_size = addresses.size
+        gon.row_size = @row_size
+        puts "--------INDEX-------row_size: #{addresses.size}"
+        addresses.size.times do |i|
+          @location = Location.create(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])
+          @dynamic_locations_size = ((Location.all.size - @locations_size)*100)/addresses.size
+          gon.watch.dynamic_locations_size = @dynamic_locations_size
+          puts "--------INDEX-------dynamic_location.size: #{@dynamic_locations_size}"
+        end
     end
 
     response = {:page => 1,

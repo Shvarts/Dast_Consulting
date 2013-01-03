@@ -5,10 +5,12 @@
 $ ->
   $(".index_button").click ->
     update_bar = (data) ->
-      $('.bar').css('width', data + '%')
+      $('div.bar').css('width', data + '%')
     $('.bar').text("Proccessing...")
-    $('.bar').css('width', parseInt(((gon.watch('dynamic_locations_size', interval: 1000, update_bar))/gon.row_size) * 100, 10) + '%')
+    $('div.bar').css('width', gon.watch('dynamic_locations_size', interval: 1000, update_bar)*100  + '%')
     gon.watch('dynamic_locations_size', interval: 1000, update_bar)
+
+#    gon.unwatch('dynamic_locations_size', update_bar)
 
 
 $ ->

@@ -11,11 +11,14 @@
 <% content_for :scripts do %>
     <%= javascript_include_tag 'upload' %>
 <% end %>
-
 <div class="content" style="width:100%">
 <div class="progress progress-striped active">
-  <div class="bar" style="width: %;" id = "bar"></div>
+  <div class="bar" style="width:  <%=@dynamic_locations_size%>%"; id = "bar"></div>
 </div>
+<div id='users-counter'>
+  <%= @dynamic_locations_size %>
+</div>
+
   <div class="form_ind"><%= form_for :dump, :remote => true, :url => {:controller => "locations",
                                                      :action => "index"}, :method => "POST", :html => {:multipart => true} do |f| %>
       Select an Excel File :

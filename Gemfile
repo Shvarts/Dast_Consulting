@@ -10,7 +10,7 @@ gem "spreadsheet"
 gem 'devise'
 gem 'roo'
 gem 'acts_as_ferret', '>= 0.5'
-gem 'paperclip'
+gem "paperclip", "~> 3.0"
 gem 'remotipart'
 gem 'ruby-progressbar'
 # Gems used only for assets and not required

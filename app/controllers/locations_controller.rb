@@ -356,41 +356,47 @@ class LocationsController < ApplicationController
         end
       end
     end
+    print "Saving locations from file...   ["
+    db_loc = 0
 
     addresses.size.times do |i|
-
       @location = Location.new(:address => addresses[i], :zip => zips[i], :owner_email => current_user.email, :parcelNumber_Value => parcelNumber_Value[i],  :altParcelNumber_Value => altParcelNumber_Value[i], :name_Value => name_Value[i], :name2_Value => name2_Value[i], :grossLandValue_Value => grossLandValue_Value[i], :grossImprovementValue_Value => grossImprovementValue_Value[i], :grossAssessedValue_Value => grossAssessedValue_Value[i], :neighborhoodName_Value => neighborhoodName_Value[i], :propertyClass_Value => propertyClass_Value[i], :propertySubClass_Value => propertySubClass_Value[i], :taxYear_Value => taxYear_Value[i], :yrConstructed_Value => yrConstructed_Value[i], :fullBaths_Value => fullBaths_Value[i], :halfBaths_Value => halfBaths_Value[i], :bedrooms_Value => bedrooms_Value[i], :improvementType_Value => improvementType_Value[i])
-      @location.save
+      if @location.save
+        print "="
+        db_loc+=1
+        @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
+        @response = {:page => 1,
+                     :total => @locations.size,
+                     :records => @locations.size,
+                     :rows => @locations.map { |loc| {:id => loc.id, :cell => [loc.address,
+                                                                               loc.zip,
+                                                                               loc.created_at.strftime("%b %d %Y"),
+                                                                               loc.latitude,
+                                                                               loc.longitude,
+                                                                               loc.owner_email,
+                                                                               loc.description,
+                                                                               loc.parcelNumber_Value,
+                                                                               loc.altParcelNumber_Value,
+                                                                               loc.name_Value,
+                                                                               loc.name2_Value,
+                                                                               loc.grossLandValue_Value,
+                                                                               loc.grossImprovementValue_Value,
+                                                                               loc.grossAssessedValue_Value,
+                                                                               loc.neighborhoodName_Value,
+                                                                               loc.propertyClass_Value,
+                                                                               loc.propertySubClass_Value,
+                                                                               loc.taxYear_Value,
+                                                                               loc.yrConstructed_Value,
+                                                                               loc.fullBaths_Value,
+                                                                               loc.halfBaths_Value,
+                                                                               loc.bedrooms_Value,
+                                                                               loc.improvementType_Value]} },
+                     :addresses => addresses.size,
+                     :db_loc => db_loc
+        }
+      end
     end
-      @locations = Location.where(:owner_email => current_user.email).order("created_at DESC")
-#    @locations = Location.all
-    @response = {:page => 1,
-                :total => @locations.size,
-                :records => @locations.size,
-                :rows => @locations.map { |loc| {:id => loc.id, :cell => [loc.address,
-                                                                          loc.zip,
-                                                                          loc.created_at.strftime("%b %d %Y"),
-                                                                          loc.latitude,
-                                                                          loc.longitude,
-                                                                          loc.owner_email,
-                                                                          loc.description,
-                                                                          loc.parcelNumber_Value,
-                                                                          loc.altParcelNumber_Value,
-                                                                          loc.name_Value,
-                                                                          loc.name2_Value,
-                                                                          loc.grossLandValue_Value,
-                                                                          loc.grossImprovementValue_Value,
-                                                                          loc.grossAssessedValue_Value,
-                                                                          loc.neighborhoodName_Value,
-                                                                          loc.propertyClass_Value,
-                                                                          loc.propertySubClass_Value,
-                                                                          loc.taxYear_Value,
-                                                                          loc.yrConstructed_Value,
-                                                                          loc.fullBaths_Value,
-                                                                          loc.halfBaths_Value,
-                                                                          loc.bedrooms_Value,
-                                                                          loc.improvementType_Value]} }
-    }
+    puts "]     Total amount #{db_loc}"
     puts "---------------to redirect_to ------- excel ---------"
     #redirect_to :controller => 'locations', :action => 'index'
     respond_to do |format|

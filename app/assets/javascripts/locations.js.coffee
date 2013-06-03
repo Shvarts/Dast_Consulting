@@ -12,7 +12,6 @@ $ ->
     )
 #    false
 
-
 #j = jQuery.noConflict()
 $ ->
   content_width = parseInt($(".content").css("width"))
